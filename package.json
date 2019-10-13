@@ -4,9 +4,7 @@
   "description": "watch and add video files",
   "main": "index.js",
   "scripts": {
-    "createDB": "sudo mysql -u root -p < server/createDB.sql",
-    "start": "node server/server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/server"
   },
   "author": "charlie",
   "license": "ISC",
