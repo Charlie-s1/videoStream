@@ -25,7 +25,7 @@ async function post(e){
       sec.appendChild(p);
     if (child.split('.').pop() == "mkv" || child.split('.').pop() == "mp4"){
       p.addEventListener('click',open);
-      
+
     }else {
       p.addEventListener('click',post);
     }
@@ -34,12 +34,14 @@ async function post(e){
 
 function open(e){
   //const sec = document.querySelector("#list");
-  //const vid = document.createElement("video");
+
+  const vid = document.querySelector("video");
+  vid.style.display="block";
   //const src = document.createElement("source");
-  window.location.href = window.location + "files/" + e.target.textContent; 
+  //window.location.href = window.location + "files/" + e.target.textContent;
 //sec.innerHTML = "";
  // console.log(e.target.textContent);
-  //vid.src = e.target.textContent;
+  vid.src =  window.location + "files/" + e.target.textContent;
   //sec.appendChild(vid);
   //vid.appendChild(src);
 }
