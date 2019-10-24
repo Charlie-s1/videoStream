@@ -1,28 +1,26 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
-const tv = require("./TVapi");
-//const db = require('./db.js');
-
+const up = require('express-fileupload');
+const organise = require('./organise');
 
 app.use(express.static('pages'));
+app.use(up());
+//app.use(express.urlencoded());
 
-// app.get("/getMessages", afunction(req,res){
-//   try {
-//     const mov = await db.getMessages(res);
-//     fs.writeFile('app/webPages/walls/movies.json', mov, 'utf8',function(err){
-//       if (err){
-//         console.log("nope");
-//       }else{
-//         console.log("got messages");
-//       }
-//     });
-//
-//   } catch (e) {
-//     console.error(e);
-//     res.sendStatus(500);
-//   }
-// })
+app.post("/upload",function(req,res){
+  let option = req.body.organise == "" ? "": req.body.organise + "/"
+  const dir = "pages/files/" + req.body.folder + "/" + option ;
+  organise.newDirs(req.body.folder,req.body.organise);
+  fs.writeFile(dir + req.files.video.name, req.files.video.data, (err) => {
+    if (err) return console.log(err);
+
+    console.log("up");
+  })
+  //res.send(JSON.stringify(req.body.file));
+
+});
+
 app.get("/list",function(req,res){
   fs.readdir(req.query.folder, (err, files) => {
     res.send(JSON.stringify(files))
@@ -30,5 +28,3 @@ app.get("/list",function(req,res){
 });
 
 app.listen(8080);
-
-//myserver UPDATE
