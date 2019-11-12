@@ -1,9 +1,10 @@
 window.addEventListener('load', init);
 
 function init() {
-  document.querySelector("#Films").addEventListener('click',post);
-  document.querySelector("#Tv").addEventListener('click',post);
-  // console.log(await getFilms("http://localhost:8080/list/Films"));
+  // document.querySelector("#Films").addEventListener('click',post);
+  // document.querySelector("#Tv").addEventListener('click',post);
+
+  showFiles("");
 }
 
 
@@ -13,23 +14,46 @@ async function getFiles(dir){
   return list;
 }
 
-async function post(e){
-  const children = await getFiles(window.location + "list/?folder=pages/files/" + e.target.textContent)
+async function showFiles(dir){
+  const children = await getFiles(window.location + "list/?folder=pages/files/" + dir)
   const sec = document.querySelector("#list");
+  const body = document.body;
+  body.innerHTML = "";
   sec.innerHTML = "";
   sec.id = "list";
-  document.body.appendChild(sec);
+
+  const back = document.createElement("p");
+  back.textContent = "<";
+  body.appendChild(back);
+  back.addEventListener('click',getParentFolder);
+
+  body.appendChild(sec);
+
   for (child of children){
       const p = document.createElement("p");
-      p.textContent = e.target.textContent+"/"+child;
+      p.textContent = dir+"/"+child;
       sec.appendChild(p);
     if (child.split('.').pop() == "mkv" || child.split('.').pop() == "mp4"){
       p.addEventListener('click',open);
 
     }else {
-      p.addEventListener('click',post);
+      p.addEventListener('click',getSubFiles);
     }
   }
+}
+
+async function getSubFiles(e){
+  showFiles(e.target.textContent);
+}
+//go back file
+async function getParentFolder(e){
+  let file = document.querySelector("#list").children[0].textContent;
+  let list = file.split("/");
+  list.pop(list.length);
+  list.pop(list.length);
+
+  showFiles(list.join("/"));
+
 }
 
 function open(e){
