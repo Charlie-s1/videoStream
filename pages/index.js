@@ -17,17 +17,17 @@ async function getFiles(dir){
 async function showFiles(dir){
   const children = await getFiles(window.location + "list/?folder=pages/files/" + dir)
   const sec = document.querySelector("#list");
-  const body = document.body;
-  body.innerHTML = "";
+  const nav = document.querySelector("nav");
+  nav.innerHTML = "";
   sec.innerHTML = "";
   sec.id = "list";
 
   const back = document.createElement("p");
   back.textContent = "<";
-  body.appendChild(back);
+  nav.appendChild(back);
   back.addEventListener('click',getParentFolder);
 
-  body.appendChild(sec);
+  nav.appendChild(sec);
 
   for (child of children){
       const p = document.createElement("p");
