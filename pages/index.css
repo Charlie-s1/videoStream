@@ -1,4 +1,17 @@
+*{
+  font-family: sans-serif;
+}
 video{
   display:none;
   width:50%;
+}
+h1{
+  color:rgba(0,0,0,0.2);
+  cursor: pointer;
+  display: inline;
+  font-size: 5rem;
+  margin-right: 2rem;
+}
+.select{
+  color:black;
 }
