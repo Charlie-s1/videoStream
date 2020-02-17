@@ -1,9 +1,12 @@
 *{
   font-family: sans-serif;
 }
+#library{
+  width:100%;
+  height:100%;
+}
 video{
-  display:none;
-  width:50%;
+  height:10rem;
 }
 h1{
   color:rgba(0,0,0,0.2);

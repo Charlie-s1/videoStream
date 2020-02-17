@@ -16,7 +16,9 @@ async function showCat(e){
   const sec = document.querySelector("#list");
   const nav = document.querySelector("nav");
   const cat = document.querySelector("#cat")
-
+  const lib = document.querySelector("#library");
+  lib.innerHTML = "";
+  
   const film = document.querySelector("#film");
   const tv = document.querySelector("#tv");
   cat.innerHTML = "<option>Select...</option>";
@@ -32,18 +34,27 @@ async function showCat(e){
   //nav.appendChild(sec);
 
   for (child of children){
-
-    if (child.split('.').pop() != "mkv" || child.split('.').pop() != "mp4"){
+    
+    const select = document.querySelector(".select").textContent
+    if (child.split('.').pop() != "mkv" && child.split('.').pop() != "mp4"){
       const option = document.createElement("option");
       option.textContent = child;
       option.value = child;
       cat.appendChild(option);
+    }else{
+      const vid = document.createElement("video");
+      const source = document.createElement("source");
+      source.type = "video/mp4"
+      source.src = `${window.location}files/${select}/${child}`;
+      vid.controls = "true"; 
+      lib.appendChild(vid);
+      vid.appendChild(source);
     }
   }
   //showVideo(cat);
 }
 async function showVideo(e){
-  const select = document.querySelector(".select").textContent
+  
   const children = await getFiles(`${window.location}list/?folder=pages/files/${select}/${e.target.value}`);
   console.log(children);
   for (child of children){
