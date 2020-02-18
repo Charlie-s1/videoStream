@@ -31,7 +31,6 @@ async function showCat(e){
     film.classList.remove("select");
   }
 
-  //nav.appendChild(sec);
 
   for (child of children){
     
@@ -42,13 +41,17 @@ async function showCat(e){
       option.value = child;
       cat.appendChild(option);
     }else{
-      const vid = document.createElement("video");
-      const source = document.createElement("source");
-      source.type = "video/mp4"
-      source.src = `${window.location}files/${select}/${child}`;
-      vid.controls = "true"; 
-      lib.appendChild(vid);
-      vid.appendChild(source);
+      const div = document.createElement("div");
+      div.classList = "videoCon";
+      const link = document.createElement("a");
+      link.classList = "videoLink";
+      link.href = `${window.location}files/${select}/${child}`;
+      const title = document.createElement("p");
+      title.textContent = child.slice(0,-4);
+
+      lib.appendChild(div);
+      div.appendChild(link);
+      div.appendChild(title);
     }
   }
   //showVideo(cat);
