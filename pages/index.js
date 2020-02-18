@@ -23,22 +23,24 @@ async function main(e){
   }
 
   let url = window.location + "list/?folder=pages/files/";
+  let urlAddition = "";
   const select = document.querySelector(".select").textContent;
   const cat = document.querySelector("#cat").value;
   let level = 0;
 
   if (e.target.classList == "select"){
-    url +=  e.target.textContent;
+    urlAddition = e.target.textContent;
   }else{
     if (e.target.id == "cat"){
-      url += `${select}/${cat}`;
+      urlAddition = `${select}/${cat}`;
       level = 1;
     }
     else{
-      url += `${select}/${cat}/${e.target.value}`;
+      urlAddition = `${select}/${cat}/${e.target.value}`;
       level = 2;
     }
   }
+  url += urlAddition;
   const children = await getFiles(url);
   let films = [];
   let cats = [];
@@ -47,16 +49,13 @@ async function main(e){
   for (child of children){
     if (child.split('.').pop() != "mkv" && child.split('.').pop() != "mp4"){
       cats.push(child);
-      console.log(child);
       
     }else{
       films.push(child);
-      //console.log(films);
     }
-  }
-  console.log(cats);
+  } 
+  showVideo(films,"files/" + urlAddition);
   
-  showVideo(films,url.slice(41));
   if(cats != ""){
     if (level==0){
       showCatagories(cats);
@@ -67,10 +66,7 @@ async function main(e){
     if(document.querySelector("#cat2")){
       document.querySelector("#cat2").remove();
     }
-  }
-  
-  
-  
+  } 
 }
 
 function showVideo(videos,url){
@@ -123,7 +119,6 @@ function showCatagories(cats,catTwo){
     if(document.querySelector("#cat2")){
       document.querySelector("#cat2").remove();
     }
-    console.log(cats);
     for(child of cats){
       const option = document.createElement("option");
       option.textContent = child;
