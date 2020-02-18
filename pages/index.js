@@ -1,12 +1,10 @@
 window.addEventListener('load', init);
 
 function init() {
-  // document.querySelector("#Films").addEventListener('click',post);
-  // document.querySelector("#Tv").addEventListener('click',post);
-
-  showFiles("");
+  document.querySelector("#film").addEventListener('click',main);
+  document.querySelector("#tv").addEventListener('click',main);
+  document.querySelector("#cat").addEventListener('change',main);
 }
-
 
 async function getFiles(dir){
   let files = await fetch(dir);
@@ -14,58 +12,124 @@ async function getFiles(dir){
   return list;
 }
 
-async function showFiles(dir){
-  const children = await getFiles(window.location + "list/?folder=pages/files/" + dir)
-  const sec = document.querySelector("#list");
-  const nav = document.querySelector("nav");
-  nav.innerHTML = "";
-  sec.innerHTML = "";
-  sec.id = "list";
+async function main(e){
 
-  const back = document.createElement("p");
-  back.textContent = "<";
-  nav.appendChild(back);
-  back.addEventListener('click',getParentFolder);
+  if(e.target.id=="film"){
+    film.classList = "select";
+    tv.classList.remove("select");
+  }else if(e.target.id=="tv"){
+    tv.classList = "select";
+    film.classList.remove("select");
+  }
 
-  nav.appendChild(sec);
+  let url = window.location + "list/?folder=pages/files/";
+  const select = document.querySelector(".select").textContent;
+  const cat = document.querySelector("#cat").value;
+  let level = 0;
 
-  for (child of children){
-      const p = document.createElement("p");
-      p.textContent = dir+"/"+child;
-      sec.appendChild(p);
-    if (child.split('.').pop() == "mkv" || child.split('.').pop() == "mp4"){
-      p.addEventListener('click',open);
-
-    }else {
-      p.addEventListener('click',getSubFiles);
+  if (e.target.classList == "select"){
+    url +=  e.target.textContent;
+  }else{
+    if (e.target.id == "cat"){
+      url += `${select}/${cat}`;
+      level = 1;
     }
+    else{
+      url += `${select}/${cat}/${e.target.value}`;
+      level = 2;
+    }
+  }
+  const children = await getFiles(url);
+  let films = [];
+  let cats = [];
+  
+  
+  for (child of children){
+    if (child.split('.').pop() != "mkv" && child.split('.').pop() != "mp4"){
+      cats.push(child);
+      console.log(child);
+      
+    }else{
+      films.push(child);
+      //console.log(films);
+    }
+  }
+  console.log(cats);
+  
+  showVideo(films,url.slice(41));
+  if(cats != ""){
+    if (level==0){
+      showCatagories(cats);
+    }else{
+      showCatagories(cats,true);
+    }
+  }else if(level<2){
+    if(document.querySelector("#cat2")){
+      document.querySelector("#cat2").remove();
+    }
+  }
+  
+  
+  
+}
+
+function showVideo(videos,url){
+  
+  const lib = document.querySelector("#library");
+  lib.innerHTML = "";
+  for (child of videos){
+    const div = document.createElement("div");
+      div.classList = "videoCon";
+      const link = document.createElement("a");
+      link.classList = "videoLink";
+      link.href = `${url}/${child}`;
+      const title = document.createElement("p");
+      title.textContent = child.slice(0,-4);
+
+      lib.appendChild(div);
+      div.appendChild(link);
+      div.appendChild(title);
   }
 }
 
-async function getSubFiles(e){
-  showFiles(e.target.textContent);
-}
-//go back file
-async function getParentFolder(e){
-  let file = document.querySelector("#list").children[0].textContent;
-  let list = file.split("/");
-  list.pop(list.length);
-  list.pop(list.length);
-
-  showFiles(list.join("/"));
-
-}
-
-function open(e){
-  //const sec = document.querySelector("#list");
-
-  const vid = document.querySelector("video");
-  vid.style.display="block";
-  //const src = document.createElement("source");
-  //window.location.href = window.location + "files/" + e.target.textContent;
-//sec.innerHTML = "";
- // console.log(e.target.textContent);
-  vid.src =  window.location + "files/" + e.target.textContent;
-  //sec.appendChild(vid);
-  //vid.appendChild(src);
+function showCatagories(cats,catTwo){
+  const nav = document.querySelector("nav");
+  
+  if (catTwo){
+    if(!document.querySelector("#cat2")){
+      const drop = document.createElement("select");
+      drop.addEventListener("change",main);
+      drop.id = "cat2";
+      drop.classList = "catagory";
+      for (child of cats){
+        const option = document.createElement("option");
+        option.textContent = child;
+        option.value = child;
+        nav.appendChild(drop)
+        drop.appendChild(option);
+      }
+    } else{
+      document.querySelector("#cat2").innerHTML = "";
+      for (child of cats){
+        const option = document.createElement("option");
+        option.textContent = child;
+        option.value = child;
+        document.querySelector("#cat2").appendChild(option);
+      }
+    }
+  }else{
+    const cat = document.querySelector("#cat")
+    cat.innerHTML = ""
+    if(document.querySelector("#cat2")){
+      document.querySelector("#cat2").remove();
+    }
+    console.log(cats);
+    for(child of cats){
+      const option = document.createElement("option");
+      option.textContent = child;
+      option.value = child;
+      cat.appendChild(option);
+    }
+    
+    }
 }
