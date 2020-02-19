@@ -1,16 +1,18 @@
 const fs = require('fs');
 
-function newDirs(insert,dir){
-  let folder = dir.split("/");
-  let current = "pages/files/" + insert + "/";
-  for (item of folder){
-    item = item + "/";
-    current += item;
-    console.log(current);
-    fs.mkdirSync(current);
+function newDirs(folder, lv1, lv2){
+  let dir = `pages/files/${folder}/${lv1}`;
+  if (!fs.existsSync(dir)){
+    fs.mkdir(dir, (err) => {
+      if(err) return console.log(err);
+    });
+    
+    if (lv2){
+      fs.mkdir(`${dir}/${lv2}`, (err) => {
+        if(err) return console.log(err);
+      });
+    }
   }
-
-
 }
 
 module.exports = {

@@ -49,7 +49,6 @@ async function main(e){
   for (child of children){
     if (child.split('.').pop() != "mkv" && child.split('.').pop() != "mp4"){
       cats.push(child);
-      
     }else{
       films.push(child);
     }
@@ -89,7 +88,7 @@ function showVideo(videos,url){
 }
 
 function showCatagories(cats,catTwo){
-  const nav = document.querySelector("nav");
+  const folders = document.querySelector("#folders");
   
   if (catTwo){
     if(!document.querySelector("#cat2")){
@@ -101,7 +100,7 @@ function showCatagories(cats,catTwo){
         const option = document.createElement("option");
         option.textContent = child;
         option.value = child;
-        nav.appendChild(drop)
+        folders.appendChild(drop)
         drop.appendChild(option);
       }
     } else{
