@@ -1,0 +1,23 @@
+*{
+    font-family: sans-serif;
+}
+body{
+    background: #303030;
+}
+input{
+    background:#373737;
+    border: none;
+    color:white;
+    margin:1rem 0;
+}
+input[type="button"]{
+    width:50%;
+    height:2rem;
+    cursor: pointer;
+}
+#form{
+    max-width: 500px;
+    margin: 20vh auto;
+    text-align: center;
+}
+
