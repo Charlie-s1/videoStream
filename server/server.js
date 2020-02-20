@@ -5,7 +5,7 @@ const up = require('express-fileupload');
 const organise = require('./organise');
 const path = require('path')
 
-app.use(express.static('pages'));
+app.use(express.static(path.join(__dirname,'../pages')));
 app.use(up());
 //app.use(express.urlencoded());
 
