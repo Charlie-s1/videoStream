@@ -21,8 +21,8 @@ async function main(e){
     tv.classList = "select";
     film.classList.remove("select");
   }
-
-  let url = window.location + "list/?folder=pages/files/";
+  
+  let url = window.location + "list/?folder=";
   let urlAddition = "";
   const select = document.querySelector(".select").textContent;
   const cat = document.querySelector("#cat").value;
@@ -69,6 +69,7 @@ async function main(e){
 }
 
 function showVideo(videos,url){
+  console.log(url);
   
   const lib = document.querySelector("#library");
   lib.innerHTML = "";

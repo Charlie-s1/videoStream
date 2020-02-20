@@ -3,6 +3,7 @@ const app = express();
 const fs = require('fs');
 const up = require('express-fileupload');
 const organise = require('./organise');
+const path = require('path')
 
 app.use(express.static('pages'));
 app.use(up());
@@ -33,7 +34,9 @@ app.post("/uploadFiles",async function(req,res){
 });
 
 app.get("/list",function(req,res){
-  fs.readdir(req.query.folder, (err, files) => {
+  let location = path.join(__dirname, `../pages/files/${req.query.folder}`);
+
+  fs.readdir(location, (err, files) => {
     res.send(JSON.stringify(files))
   })
 });
