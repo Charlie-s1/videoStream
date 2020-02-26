@@ -65,9 +65,9 @@ function uploadFiles(){
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "/uploadFiles");
 
-    xhr.onprogress = function(e){
+    xhr.upload.onprogress = function(e){
         //if(e.lengthConputatble){
-            console.log(`${e.loaded}/${e.total}`);
+            console.log(`${e.loaded}/${e.total} `, `${(e.loaded/e.total)*100}%`);
         //}
     }
     xhr.onloadstart = function (e) {
