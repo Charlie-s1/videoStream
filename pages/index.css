@@ -22,10 +22,10 @@ nav a{
   text-decoration: none;
 }
 .videoCon{
-  height:10rem;
-  width:9rem;
+  height:13rem;
+  width:8rem;
   margin:1rem;
-  padding:0 0.5rem;
+  /* padding:0 0.5rem; */
   float:left;
   position: relative;
   background: rgba(255, 255, 255, 0.2);
@@ -43,6 +43,9 @@ nav a{
   height:100%;
   position: absolute;
   z-index: 1000;
+}
+img{
+  height:100%;
 }
 h1{
   color:rgba(255, 255, 255, 0.2);

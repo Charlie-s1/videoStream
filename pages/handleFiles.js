@@ -1,4 +1,6 @@
 window.addEventListener('load', init);
+//const art = require('movie-art');
+
 
 function init() {
   document.querySelector("#film").addEventListener('click',main);
@@ -68,23 +70,38 @@ async function main(e){
   } 
 }
 
-function showVideo(videos,url){
-  console.log(url);
-  
+async function showVideo(videos,url){
+  console.log(url.split('/'));
+  urlList = url.split('/');
+
   const lib = document.querySelector("#library");
   lib.innerHTML = "";
   for (child of videos){
-    const div = document.createElement("div");
-      div.classList = "videoCon";
-      const link = document.createElement("a");
-      link.classList = "videoLink";
-      link.href = `${url}/${child}`;
-      const title = document.createElement("p");
-      title.textContent = child.slice(0,-4);
+    const image = document.createElement("img");
+    image.alt = child.slice(0,-4);
+    
+    if (urlList[1] == "TV"){
+      image.src = await movieArt(urlList[2], {type:'tv', size:'w185'});
+      console.log("ART",urlList[2]);
+      
+    }else{
+      image.src = await movieArt(child.split('(')[0], {size:'w185'});
+    }
 
-      lib.appendChild(div);
-      div.appendChild(link);
-      div.appendChild(title);
+    const div = document.createElement("div");
+    div.classList = "videoCon";
+    const link = document.createElement("a");
+    link.classList = "videoLink";
+    link.href = `${url}/${child}`;
+    link.alt = child.slice(0,-4);
+    // const title = document.createElement("p");
+    // title.textContent = child.slice(0,-4);
+    
+      
+    lib.appendChild(div);
+    div.appendChild(link);
+    // div.appendChild(title);
+    div.appendChild(image);
   }
 }
 
