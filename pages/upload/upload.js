@@ -61,20 +61,25 @@ async function createOptions(e){
 }
 
 function uploadFiles(){
-
+    const prog = document.querySelector(".prog");
+    const progCont = document.querySelector(".progCont");
+    progCont.style.display = "block"
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "/uploadFiles");
 
     xhr.upload.onprogress = function(e){
         //if(e.lengthConputatble){
-            console.log(`${e.loaded}/${e.total} `, `${(e.loaded/e.total)*100}%`);
+            let percent = Math.round((((e.loaded/e.total)*100)*100)/100)
+            console.log(`${e.loaded}/${e.total} `, `${percent}%`);
+            prog.style.width = `${percent}%`
         //}
     }
     xhr.onloadstart = function (e) {
-        console.log("start")
+        console.log("start");
     }
     xhr.onloadend = function (e) {
-        console.log("end")
+        console.log("end");
+        prog.innerHTML = "<h1>Done</h1>"
     }
     xhr.send(new FormData(document.querySelector("#form")));
 }

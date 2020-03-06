@@ -43,11 +43,11 @@ async function main(e){
   url += urlAddition;
   const children = await getFiles(url);
   let films = [];
-  let cats = [];
+  let cats = ["select..."];
   
   
   for (child of children){
-    if (child.split('.').pop() != "mkv" && child.split('.').pop() != "mp4"){
+    if (child.split('.').pop() != "mkv" && child.split('.').pop() != "mp4" && child.split('.').pop() != "avi"){
       cats.push(child);
     }else{
       films.push(child);
@@ -55,7 +55,7 @@ async function main(e){
   } 
   showVideo(films,"files/" + urlAddition);
   
-  if(cats != ""){
+  if(cats.length > 1){
     if (level==0){
       showCatagories(cats);
     }else{
