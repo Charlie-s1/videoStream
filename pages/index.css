@@ -18,6 +18,12 @@ nav a{
   color: white;
   text-decoration: none;
 }
+#tmpImg{
+  height:8rem;
+  margin:auto;
+  grid-column-start:1;
+  grid-column-end:5;
+}
 #library{
   max-width:1200px;
   margin:auto;

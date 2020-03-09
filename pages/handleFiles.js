@@ -76,8 +76,22 @@ async function showVideo(videos,url){
 
   const lib = document.querySelector("#library");
   lib.innerHTML = "";
+  let imageList = [];
 
-
+  const tmpImg = document.createElement("img");
+  tmpImg.src = "/files/loading.gif";
+  tmpImg.id = "tmpImg";
+  lib.appendChild(tmpImg);
+  
+  for (child of videos){
+    if(urlList[1] == "TV"){
+      imageList.push(await movieArt(urlList[2], {type:'tv', size:'w185'}));
+    }else{
+      imageList.push(await movieArt(child.split('(')[0], {size:'w185'}));
+    }
+  }
+  lib.innerHTML = "";
+  let i = 0;
   for (child of videos){
     const image = document.createElement("img");
     image.alt = child.slice(0,-4);
@@ -94,13 +108,14 @@ async function showVideo(videos,url){
     div.appendChild(link);
 
     if (urlList[1] == "TV"){
-      image.src = await movieArt(urlList[2], {type:'tv', size:'w185'});
+      image.src = imageList[i];
       console.log("ART",urlList[2]);
       title.textContent = child.slice(0,-4);
       div.appendChild(title);
     }else{
-      image.src = await movieArt(child.split('(')[0], {size:'w185'});
+      image.src = imageList[i];
     }
+    i++;
     link.appendChild(image);
   }
 }
