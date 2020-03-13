@@ -66,6 +66,7 @@ async function main(e){
   }else if(level<2){
     if(document.querySelector("#cat2")){
       document.querySelector("#cat2").remove();
+      document.querySelector("#between").remove();
     }
   } 
 }
