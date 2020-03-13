@@ -1,1 +1,1 @@
-add folders or .mp4 files here 
+Upload folders and/or .mp4 files here
