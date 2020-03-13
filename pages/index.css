@@ -4,7 +4,6 @@
 body{
   background: #303030;
 }
-
 nav{
   position: relative;
   max-width: 1000px;
@@ -17,6 +16,22 @@ nav a{
   height:100%;
   color: white;
   text-decoration: none;
+}
+#between{
+  color:white;
+  font-size: 1rem;
+}
+.catagory{
+  color:white;
+  border:none;
+  background-color:rgba(0, 0, 0, 0);
+}
+.catagory:focus,option{
+  outline: none !important;
+}
+option{
+  background-color:#303030;
+  border:none;
 }
 #tmpImg{
   height:8rem;

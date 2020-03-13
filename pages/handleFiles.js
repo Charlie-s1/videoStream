@@ -125,15 +125,19 @@ function showCatagories(cats,catTwo){
   
   if (catTwo){
     if(!document.querySelector("#cat2")){
+      const span = document.createElement("span");
+      span.textContent = " / ";
+      span.id = "between";
+      folders.appendChild(span);
       const drop = document.createElement("select");
       drop.addEventListener("change",main);
       drop.id = "cat2";
       drop.classList = "catagory";
+      folders.appendChild(drop);
       for (child of cats){
         const option = document.createElement("option");
         option.textContent = child;
         option.value = child;
-        folders.appendChild(drop)
         drop.appendChild(option);
       }
     } else{
@@ -150,6 +154,7 @@ function showCatagories(cats,catTwo){
     cat.innerHTML = ""
     if(document.querySelector("#cat2")){
       document.querySelector("#cat2").remove();
+      document.querySelector("#between").remove();
     }
     for(child of cats){
       const option = document.createElement("option");
