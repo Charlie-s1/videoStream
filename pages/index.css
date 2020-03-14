@@ -2,7 +2,7 @@
   font-family: sans-serif;
 }
 body{
-  background: #303030;
+  background: #141414;
 }
 nav{
   position: relative;
@@ -37,14 +37,14 @@ option{
   height:8rem;
   margin:auto;
   grid-column-start:1;
-  grid-column-end:5;
+  grid-column-end:6;
 }
 #library{
   max-width:1200px;
   margin:auto;
   height:100%;
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
   text-align: center;
 }
 .videoCon{
@@ -58,15 +58,17 @@ option{
   text-align: center;
   color: white;
   background: rgba(0, 0, 0, 0.705);
-  position: relative;
-  bottom:50px;
-  height:46px;
-  line-height: 45px;
-  max-width: 100%;
-  margin:auto;
+  position: absolute;
+  top:-50px;
+  height:300%;
+  line-height: 1.5rem;
+  width: 100%;
+  z-index:1;
 }
 .videoLink{
+  position:relative;
   height:100%;
+  width:100%;
 }
 img{
   height:100%;
@@ -80,4 +82,31 @@ h1{
 }
 .select{
   color:rgb(255, 255, 255);
+}
+@media screen and (max-width:1000px){
+  #library{
+    grid-template-columns: auto auto auto auto;
+  }
+}
+@media screen and (max-width:800px){
+  #library{
+    grid-template-columns: auto auto auto;
+    grid-auto-rows:25%;
+  }
+  .videoCon{
+    height:95%;
+  }
+  .catagory{
+    height:5rem;
+    font-size: 2.5rem;
+  }
+  #between{
+    font-size:2.5rem;
+  }
+  h1{
+    font-size: 10rem;
+  }
+  nav a{
+    display:none;
+  }
 }

@@ -120,7 +120,7 @@ async function showVideo(videos,url){
       image.src = imageList[i];
       console.log("ART",urlList[2]);
       title.textContent = child.slice(0,-4);
-      div.appendChild(title);
+      link.appendChild(title);
     }else{
       image.src = imageList[i];
     }
