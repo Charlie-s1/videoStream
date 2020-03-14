@@ -1,11 +1,9 @@
 window.addEventListener('load', init);
-//const art = require('movie-art');
-
 
 function init() {
   document.querySelector("#film").addEventListener('click',main);
   document.querySelector("#tv").addEventListener('click',main);
-  document.querySelector("#cat").addEventListener('change',main);
+  //document.querySelector("#cat").addEventListener('change',main);
 }
 
 async function getFiles(dir){
@@ -27,17 +25,17 @@ async function main(e){
   let url = window.location + "list/?folder=";
   let urlAddition = "";
   const select = document.querySelector(".select").textContent;
-  const cat = document.querySelector("#cat").value;
   let level = 0;
 
   if (e.target.classList == "select"){
     urlAddition = e.target.textContent;
   }else{
     if (e.target.id == "cat"){
-      urlAddition = `${select}/${cat}`;
+      urlAddition = `${select}/${e.target.value}`;
       level = 1;
     }
     else{
+      const cat = document.querySelector("#cat").value;
       urlAddition = `${select}/${cat}/${e.target.value}`;
       level = 2;
     }
@@ -60,17 +58,26 @@ async function main(e){
   
   if(cats.length > 1){
     if (level==0){
-      showCatagories(cats);
+      
+        showCatagories(cats);
+      
     }else{
       showCatagories(cats,true);
     }
-  }else if(level<2){
-    if(document.querySelector("#cat2")){
+  }else{ 
+    if(document.querySelector("#cat") && level==0){
+      document.querySelector("#cat").remove();
+    }
+    if(document.querySelector("#cat2") && level<1){
       document.querySelector("#cat2").remove();
       document.querySelector("#between").remove();
     }
-  } 
-}
+  }
+
+  if(level<2){
+    
+  }
+
 
 async function showVideo(videos,url){
   console.log(url.split('/'));
@@ -131,6 +138,7 @@ function showCatagories(cats,catTwo){
       span.textContent = " / ";
       span.id = "between";
       folders.appendChild(span);
+
       const drop = document.createElement("select");
       drop.addEventListener("change",main);
       drop.id = "cat2";
@@ -152,18 +160,30 @@ function showCatagories(cats,catTwo){
       }
     }
   }else{
-    const cat = document.querySelector("#cat")
-    cat.innerHTML = ""
+    if(!document.querySelector("#cat")){
+      const createCat = document.createElement("select");
+      createCat.id = "cat";
+      createCat.classList = "catagory";
+      document.querySelector("#folders").appendChild(createCat);
+      createCat.addEventListener('change',main);
+    }else{
+      document.querySelector("#cat").innerHTML = "";
+    }
+
+    
+
     if(document.querySelector("#cat2")){
       document.querySelector("#cat2").remove();
       document.querySelector("#between").remove();
     }
     for(child of cats){
+      const cat = document.querySelector("#cat");
       const option = document.createElement("option");
       option.textContent = child;
       option.value = child;
       cat.appendChild(option);
     }
     
-    }
+  }
+}
 }
