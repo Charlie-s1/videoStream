@@ -7,8 +7,19 @@ function init() {
 }
 
 async function getFiles(dir){
+  const tmpImg = document.createElement("img");
+  tmpImg.src = "/files/loading.gif";
+  tmpImg.id = "tmpImg";
+  const lib = document.querySelector("#library");
+  lib.appendChild(tmpImg);
+
   let files = await fetch(dir);
   let list = await files.json();
+  
+  lib.innerHTML = "";
+
+  console.log(list);
+  //showVideo(list);
   return list;
 }
 
@@ -41,21 +52,21 @@ async function main(e){
     }
   }
   url += urlAddition;
-  const children = await getFiles(url);
-  let films = [];
+  const films = await getFiles(url);
+  //let films = [];
   let cats = ["select..."];
   const files = ["mkv","mp4","avi"];
   
-  for (child of children){
-    if (files.indexOf(child.split('.').pop()) >= 0){
-      films.push(child);
-    }else if(child.split('.').pop() == "txt"){}
-    else{
-      cats.push(child);
-    }
-  } 
-  showVideo(films,"files/" + urlAddition);
-  
+  // for (child of children){
+  //   if (files.indexOf(child.split('.').pop()) == "txt"){
+  //     // films.push(child);
+  //   // 
+  //   }
+  //   else{
+  //     cats.push(child);
+  //   }
+  // } 
+  showVideo(films);
   if(cats.length > 1){
     if (level==0){
       
@@ -79,55 +90,59 @@ async function main(e){
   }
 
 
-async function showVideo(videos,url){
-  console.log(url.split('/'));
-  urlList = url.split('/');
+async function showVideo(videos){
 
   const lib = document.querySelector("#library");
   lib.innerHTML = "";
+  let infoList = [];
   let imageList = [];
-
-  const tmpImg = document.createElement("img");
-  tmpImg.src = "/files/loading.gif";
-  tmpImg.id = "tmpImg";
-  lib.appendChild(tmpImg);
+  
+  
+  
+  // for (child of videos){
+  //   const filmSplit = child.split(/[()\[\]]+/);
+  //   if(urlList[1] == "TV"){
+  //     imageList.push(await movieArt(urlList[2], {type:'tv', size:'w185'}));
+  //   }else{
+  //     //imageList.push(await movieArt(filmSplit[0], {year:filmSplit[1], size:'w185'}));
+  //     infoList.push(await movieInfo(filmSplit[0], filmSplit[1]));
+      
+  //   }
+  // }
+  
+  let i = 0;
+  console.log(videos);
   
   for (child of videos){
-    if(urlList[1] == "TV"){
-      imageList.push(await movieArt(urlList[2], {type:'tv', size:'w185'}));
-    }else{
-      imageList.push(await movieArt(child.split('(')[0], {size:'w185'}));
-    }
-  }
-  lib.innerHTML = "";
-  let i = 0;
-  for (child of videos){
     const image = document.createElement("img");
-    image.alt = child.slice(0,-4);
+    image.alt = child.title
     const title = document.createElement("p");
 
     const div = document.createElement("div");
     div.classList = "videoCon";
     const link = document.createElement("a");
     link.classList = "videoLink";
-    link.href = `${url}/${child}`;
-    link.alt = child.slice(0,-4);
+    link.href = child.link;
+    link.alt = child.title;
 
     lib.appendChild(div);
     div.appendChild(link);
-
+    console.log(child);
+    
     if (urlList[1] == "TV"){
       image.src = imageList[i];
       console.log("ART",urlList[2]);
       title.textContent = child.slice(0,-4);
       link.appendChild(title);
     }else{
-      image.src = imageList[i];
+      image.src = child.imageBase + child.poster_path;
+      console.log(image.src);
+      
     }
     i++;
     link.appendChild(image);
   }
-}
+} 
 
 function showCatagories(cats,catTwo){
   const folders = document.querySelector("#folders");

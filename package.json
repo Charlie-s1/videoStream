@@ -4,13 +4,18 @@
   "description": "watch and add video files",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server"
+    "start": "node server/server",
+    "test": "nodemon server/server"
   },
   "author": "charlie",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6-alpha.6",
+    "ffmetadata": "^1.6.0",
+    "movie-art": "^2.0.3",
+    "movie-info": "^2.0.5",
+    "nodemon": "^2.0.2",
     "path": "^0.12.7"
   }
 }

@@ -4,6 +4,7 @@ const fs = require('fs');
 const up = require('express-fileupload');
 const organise = require('./organise');
 const path = require('path')
+const movieInfo = require('movie-info');
 
 app.use(express.static(path.join(__dirname,'../pages')));
 app.use(up());
@@ -37,12 +38,39 @@ app.post("/uploadFiles",async function(req,res){
   
 });
 
-app.get("/list",function(req,res){
+app.get("/list",async function(req,res){
   let location = path.join(__dirname, `../pages/files/${req.query.folder}`);
+  const pathList = req.query.folder.split('/');
+  let files = [];
+  const exten = ["mkv","mp4","avi"];
+  console.log(pathList);
+  
+  fs.readdir(location, async (err, fileNames) => {
+    if(err) return console.log(err);
+    for (item of fileNames){
+      console.log(item);
+      
+      const nameSplit = item.split(/[()\[\]]+/);
+      if (pathList[0] == "Films" && exten.indexOf(nameSplit)){
+        console.log("start", nameSplit);
+        let thisMovie = await movieInfo(nameSplit[0],nameSplit[1]);
+        thisMovie["link"] = `${location}/${item}`;
+        files.push(thisMovie);
+      }else{
+        files = JSON.stringify(fileNames);
+      }  
+    }
+    res.send(files);
+    
+  });
+  
+  
+});
 
-  fs.readdir(location, (err, files) => {
-    res.send(JSON.stringify(files))
-  })
+app.get("/data", function(req,res){
+  let dir = path.join(__dirname, `../pages/files/${req.param.path}`);
+  const data = organise.getMeta(dir);
+  res.send(data);
 });
 
 app.listen(8080);
