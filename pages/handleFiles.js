@@ -11,15 +11,13 @@ async function getFiles(dir){
   tmpImg.src = "/files/loading.gif";
   tmpImg.id = "tmpImg";
   const lib = document.querySelector("#library");
+  lib.innerHTML = "";
   lib.appendChild(tmpImg);
 
   let files = await fetch(dir);
   let list = await files.json();
   
   lib.innerHTML = "";
-
-  console.log(list);
-  //showVideo(list);
   return list;
 }
 
@@ -52,6 +50,7 @@ async function main(e){
     }
   }
   url += urlAddition;
+  
   const films = await getFiles(url);
   //let films = [];
   let cats = ["select..."];
@@ -66,14 +65,16 @@ async function main(e){
   //     cats.push(child);
   //   }
   // } 
-  showVideo(films);
-  if(cats.length > 1){
+  console.log(films);
+  
+  showVideo(films.files, urlAddition.split("/"));
+  if(films.cat.length > 1){
     if (level==0){
       
-        showCatagories(cats);
+        showCatagories(films.cat);
       
     }else{
-      showCatagories(cats,true);
+      showCatagories(films.cat,true);
     }
   }else{ 
     if(document.querySelector("#cat") && level==0){
@@ -90,12 +91,13 @@ async function main(e){
   }
 
 
-async function showVideo(videos){
+async function showVideo(videos,urlList){
 
   const lib = document.querySelector("#library");
   lib.innerHTML = "";
   let infoList = [];
   let imageList = [];
+  console.log("urlList",urlList);
   
   
   
@@ -111,7 +113,7 @@ async function showVideo(videos){
   // }
   
   let i = 0;
-  console.log(videos);
+  console.log("vid: ",videos);
   
   for (child of videos){
     const image = document.createElement("img");
@@ -129,10 +131,9 @@ async function showVideo(videos){
     div.appendChild(link);
     console.log(child);
     
-    if (urlList[1] == "TV"){
-      image.src = imageList[i];
-      console.log("ART",urlList[2]);
-      title.textContent = child.slice(0,-4);
+    if (urlList[0] == "TV"){
+      image.src = await movieArt(urlList[1], {type:'tv', size:'w185'});
+      title.textContent = child.title;
       link.appendChild(title);
     }else{
       image.src = child.imageBase + child.poster_path;
