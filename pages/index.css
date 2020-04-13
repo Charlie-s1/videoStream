@@ -39,8 +39,19 @@ option{
   grid-column-start:1;
   grid-column-end:6;
 }
+#videoCont{
+  max-width: 1200px;
+  margin:auto;
+}
+#videoCont video{
+  width:60%;
+  margin:10px 20%;
+}
+#videoCont video:focus{
+  outline:none;
+}
 #library{
-  max-width:1200px;
+  width:100%;
   margin:auto;
   height:100%;
   display: grid;
@@ -54,6 +65,7 @@ option{
   /* background: rgba(255, 255, 255, 0.2); */
 }
 .videoCon p{
+  cursor: pointer;
   word-wrap: break-word;
   text-align: center;
   color: white;
@@ -71,6 +83,7 @@ option{
   width:100%;
 }
 img{
+  cursor: pointer;
   height:100%;
 }
 h1{
@@ -87,16 +100,15 @@ h1{
   #library{
     grid-template-columns: auto auto auto auto;
   }
+  nav a{
+    display:none;
+  }
 }
 @media screen and (max-width:800px){
   #library{
-    grid-template-columns: auto auto auto;
-    grid-auto-rows:25%;
+    grid-template-columns: auto auto;
   }
-  .videoCon{
-    height:95%;
-  }
-  .catagory{
+  /* .catagory{
     height:5rem;
     font-size: 2.5rem;
   }
@@ -105,8 +117,6 @@ h1{
   }
   h1{
     font-size: 10rem;
-  }
-  nav a{
-    display:none;
-  }
+  } */
+
 }

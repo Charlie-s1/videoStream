@@ -52,6 +52,7 @@ async function main(e){
   url += urlAddition;
   
   const films = await getFiles(url);
+  
   //let films = [];
   let cats = ["select..."];
   const files = ["mkv","mp4","avi"];
@@ -65,8 +66,7 @@ async function main(e){
   //     cats.push(child);
   //   }
   // } 
-  console.log(films);
-  
+
   showVideo(films.files, urlAddition.split("/"));
   if(films.cat.length > 1){
     if (level==0){
@@ -97,7 +97,6 @@ async function showVideo(videos,urlList){
   lib.innerHTML = "";
   let infoList = [];
   let imageList = [];
-  console.log("urlList",urlList);
   
   
   
@@ -113,29 +112,31 @@ async function showVideo(videos,urlList){
   // }
   
   let i = 0;
-  console.log("vid: ",videos);
   
   for (child of videos){
     const image = document.createElement("img");
     image.alt = child.title
     const title = document.createElement("p");
-
     const div = document.createElement("div");
     div.classList = "videoCon";
     const link = document.createElement("a");
     link.classList = "videoLink";
-    link.href = child.link;
-    link.alt = child.title;
+    
 
     lib.appendChild(div);
     div.appendChild(link);
-    console.log(child);
     
     if (urlList[0] == "TV"){
       image.src = await movieArt(urlList[1], {type:'tv', size:'w185'});
       title.textContent = child.title;
+      image.id = child.link;
+      image.addEventListener('click',startVideo);
+      title.id = child.link;
+      title.addEventListener('click',startVideo);
       link.appendChild(title);
     }else{
+      link.href = child.link;
+      link.alt = child.title;
       image.src = child.imageBase + child.poster_path;
       console.log(image.src);
       
@@ -202,4 +203,21 @@ function showCatagories(cats,catTwo){
     
   }
 }
+}
+function startVideo(e){
+  const lib = document.querySelector("#videoCont");
+  
+  const vid = document.createElement('video');
+  console.log(e.target);
+  
+  vid.src = e.target.id;
+  vid.controls = true;
+  vid.autoplay = true;
+  if (document.querySelector("video")){
+    document.querySelector("video").remove();
+  }
+  else{
+    lib.prepend(vid); 
+  }
+  
 }
