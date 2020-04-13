@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/server",
-    "test": "nodemon server/server"
+    "test": "nodemon server/server",
+    "createFilmJson": "node server/createFilmJson"
   },
   "author": "charlie",
   "license": "ISC",

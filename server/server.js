@@ -3,9 +3,10 @@ const app = express();
 const fs = require('fs');
 const up = require('express-fileupload');
 const organise = require('./organise');
-const path = require('path')
+const path = require('path');
 const movieInfo = require('movie-info');
 const movieArt = require('movie-art');
+
 
 app.use(express.static(path.join(__dirname,'../pages')));
 app.use(up());
@@ -45,45 +46,40 @@ app.get("/list",async function(req,res){
   let files = [];
   let cat = ["Select..."];
   const exten = ["mkv","mp4","avi"];
+  console.log(pathList[0]);
   
-  fs.readdir(location, async (err, fileNames) => {
-    if(err) return console.log(err);
-    for (item of fileNames){
-      const nameSplit = item.split(/[().\[\]]+/);   
-      
-      if (pathList[0] == "Films" && exten.indexOf(nameSplit[nameSplit.length-1])!=-1){
-        console.log("start", nameSplit);
-        let thisMovie = await movieInfo(nameSplit[0],nameSplit[1]);
-        thisMovie["link"] = `/files/${req.query.folder}/${item}`;
-        thisMovie["quality"] = nameSplit[2];
-        files.push(thisMovie);
-      }
-      else if(pathList[0]=="TV" && exten.indexOf(nameSplit[nameSplit.length-1])!=-1){
-        console.log(nameSplit);
-        console.log(pathList[1]);
-        
-        let episode = {
-          "title": nameSplit[0],
-          "link" : `/files/${req.query.folder}/${item}`,
-          "poster": movieArt(pathList[1],{type:'tv'})
-        }
-        files.push(episode);
-      }
-      else if(nameSplit.indexOf("txt")!=-1){
-        console.log("txt");
-        
-      }
-      else{
-        cat.push(item);
-      }  
-    }
-
-
+  if (pathList[0] == "Films"){
+    let rawData = fs.readFileSync(path.join(__dirname,"../server/films.json"))
+    files = JSON.parse(rawData);
+    console.log(files);
     res.send({"files":files, "cat":cat});
+  }
+  else{
+
+    fs.readdir(location, async (err, fileNames) => {
+      if(err) return console.log(err);
+      for (item of fileNames){
+        const nameSplit = item.split(/[().\[\]]+/);
+        if(pathList[0]=="TV" && exten.indexOf(nameSplit[nameSplit.length-1])!=-1){        
+          let episode = {
+            "title": nameSplit[0],
+            "link" : `/files/${req.query.folder}/${item}`,
+            "poster": movieArt(pathList[1],{type:'tv'})
+          }
+          files.push(episode);
+        }
+        else if(nameSplit.indexOf("txt")!=-1){}
+        else{
+          cat.push(item);
+          console.log(files,cat);
+        }  
+      }
+      res.send({"files":files, "cat":cat});  
+    });
+  }
+ 
+  
     
-  });
-  
-  
 });
 
 app.get("/data", function(req,res){
