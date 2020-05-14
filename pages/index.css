@@ -17,16 +17,19 @@ nav a{
   color: white;
   text-decoration: none;
 }
+.hide{
+  display:none;
+}
 #between{
   color:white;
   font-size: 1rem;
 }
-.catagory{
+.category{
   color:white;
   border:none;
   background-color:rgba(0, 0, 0, 0);
 }
-.catagory:focus,option{
+.category:focus,option{
   outline: none !important;
 }
 option{
@@ -64,7 +67,7 @@ option{
   /* padding:0 0.5rem; */
   /* background: rgba(255, 255, 255, 0.2); */
 }
-.videoCon p{
+.title{
   cursor: pointer;
   word-wrap: break-word;
   text-align: center;
@@ -76,6 +79,22 @@ option{
   line-height: 1.5rem;
   width: 100%;
   z-index:1;
+}
+#ord{
+  float:right;
+}
+.score,.qual{
+  cursor:pointer;
+  position: absolute;
+  color:white;
+  top:-1850%;
+  text-shadow: -1px -1px 5px #141414, 1px -1px 5px #141414, -1px 1px 5px #141414, 1px 1px 5px #141414;
+}
+.score{
+  right:5%;
+}
+.qual{
+  left:5%;
 }
 .videoLink{
   position:relative;
@@ -108,7 +127,7 @@ h1{
   #library{
     grid-template-columns: auto auto;
   }
-  /* .catagory{
+  /* .category{
     height:5rem;
     font-size: 2.5rem;
   }

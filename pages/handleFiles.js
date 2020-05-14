@@ -3,32 +3,54 @@ window.addEventListener('load', init);
 function init() {
   document.querySelector("#film").addEventListener('click',main);
   document.querySelector("#tv").addEventListener('click',main);
+  document.querySelector("#ord").addEventListener('change',main)
   //document.querySelector("#cat").addEventListener('change',main);
 }
 
 async function getFiles(dir){
-  const tmpImg = document.createElement("img");
-  tmpImg.src = "/files/loading.gif";
-  tmpImg.id = "tmpImg";
-  const lib = document.querySelector("#library");
-  lib.innerHTML = "";
-  lib.appendChild(tmpImg);
-
+  // const tmpImg = document.createElement("img");
+  // tmpImg.src = "/files/loading.gif";
+  // tmpImg.id = "tmpImg";
+  // const lib = document.querySelector("#library");
   let files = await fetch(dir);
   let list = await files.json();
-  
-  lib.innerHTML = "";
+  const sort = document.querySelector("#ord");
+
+  if(sort.value == "score"){
+    list.files.sort((a, b) => b.vote_average - a.vote_average);
+  }else if(sort.value == "quality"){
+    list.files.sort(function(a, b){
+      if(a.quality < b.quality){
+        return -1;
+      }if(a.quality>b.quality){
+        return 1;
+      }
+      return 0;
+    });
+  }
+  else if(sort.value == "date"){
+    list.files.sort(function(a,b){
+      if(a.release_date < b.release_date){
+        return -1;
+      }if(a.release_date>b.release_date){
+        return 1;
+      }
+      return 0;
+    });
+  }
   return list;
 }
 
 async function main(e){
-
+  const ord = document.querySelector("#ord");
   if(e.target.id=="film"){
     film.classList = "select";
     tv.classList.remove("select");
+    ord.classList = "category";
   }else if(e.target.id=="tv"){
     tv.classList = "select";
     film.classList.remove("select");
+    ord.classList = "hide";
   }
   
   let url = window.location + "list/?folder=";
@@ -36,9 +58,13 @@ async function main(e){
   const select = document.querySelector(".select").textContent;
   let level = 0;
 
+  
   if (e.target.classList == "select"){
     urlAddition = e.target.textContent;
-  }else{
+  } else if(e.target.id == "ord"){
+    urlAddition = select;
+  }
+  else{
     if (e.target.id == "cat"){
       urlAddition = `${select}/${e.target.value}`;
       level = 1;
@@ -70,9 +96,7 @@ async function main(e){
   showVideo(films.files, urlAddition.split("/"));
   if(films.cat.length > 1){
     if (level==0){
-      
-        showCatagories(films.cat);
-      
+      showCatagories(films.cat);
     }else{
       showCatagories(films.cat,true);
     }
@@ -117,6 +141,8 @@ async function showVideo(videos,urlList){
     const image = document.createElement("img");
     image.alt = child.title
     const title = document.createElement("p");
+    const score = document.createElement("p");
+    const qual = document.createElement("p");
     const div = document.createElement("div");
     div.classList = "videoCon";
     const link = document.createElement("a");
@@ -132,14 +158,20 @@ async function showVideo(videos,urlList){
       image.id = child.link;
       image.addEventListener('click',startVideo);
       title.id = child.link;
+      title.classList = "title";
       title.addEventListener('click',startVideo);
       link.appendChild(title);
     }else{
-      link.href = child.link;
+      score.textContent = child.vote_average;
+      score.classList = "score";
+      qual.textContent = child.quality;
+      qual.classList = "qual";
       link.alt = child.title;
       image.src = child.imageBase + child.poster_path;
-      console.log(image.src);
-      
+      image.id = child.link;
+      image.addEventListener('click',startVideo);
+      link.appendChild(score);
+      link.appendChild(qual);
     }
     i++;
     link.appendChild(image);
@@ -159,7 +191,7 @@ function showCatagories(cats,catTwo){
       const drop = document.createElement("select");
       drop.addEventListener("change",main);
       drop.id = "cat2";
-      drop.classList = "catagory";
+      drop.classList = "category";
       folders.appendChild(drop);
       for (child of cats){
         const option = document.createElement("option");
@@ -180,7 +212,7 @@ function showCatagories(cats,catTwo){
     if(!document.querySelector("#cat")){
       const createCat = document.createElement("select");
       createCat.id = "cat";
-      createCat.classList = "catagory";
+      createCat.classList = "category";
       document.querySelector("#folders").appendChild(createCat);
       createCat.addEventListener('change',main);
     }else{
@@ -204,20 +236,17 @@ function showCatagories(cats,catTwo){
   }
 }
 }
-function startVideo(e){
-  const lib = document.querySelector("#videoCont");
-  
-  const vid = document.createElement('video');
-  console.log(e.target);
-  
-  vid.src = e.target.id;
-  vid.controls = true;
-  vid.autoplay = true;
+async function startVideo(e, sub){
   if (document.querySelector("video")){
     document.querySelector("video").remove();
   }
-  else{
-    lib.prepend(vid); 
-  }
   
+ 
+  const lib = document.querySelector("#videoCont");
+  const vid = document.createElement('video');
+  vid.src = e.target.id;
+  vid.controls = true;
+  vid.autoplay = true;
+  lib.prepend(vid); 
+  scroll(0,0);
 }

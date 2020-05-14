@@ -19,13 +19,11 @@ app.post("/uploadFiles",async function(req,res){
   }else{
     dir += `${req.body.lv1}/${req.body.lv2}`;
   }
-  console.log(dir);
   organise.newDirs(req.body.folder,req.body.lv1,req.body.lv2)
   if (req.files.video.length > 1){
     for (file of req.files.video){
       fs.writeFile(`${dir}/${file.name}`, file.data, (err) => {
         if(err) return console.log(err);
-        console.log("up");
       })
     }
     
@@ -46,32 +44,32 @@ app.get("/list",async function(req,res){
   let files = [];
   let cat = ["Select..."];
   const exten = ["mkv","mp4","avi"];
-  console.log(pathList[0]);
   
   if (pathList[0] == "Films"){
     let rawData = fs.readFileSync(path.join(__dirname,"../server/films.json"))
     files = JSON.parse(rawData);
-    console.log(files);
     res.send({"files":files, "cat":cat});
   }
   else{
-
     fs.readdir(location, async (err, fileNames) => {
       if(err) return console.log(err);
       for (item of fileNames){
         const nameSplit = item.split(/[().\[\]]+/);
-        if(pathList[0]=="TV" && exten.indexOf(nameSplit[nameSplit.length-1])!=-1){        
+        if(exten.indexOf(nameSplit[nameSplit.length-1])!=-1){        
           let episode = {
+            "quality": nameSplit[2],
             "title": nameSplit[0],
             "link" : `/files/${req.query.folder}/${item}`,
             "poster": movieArt(pathList[1],{type:'tv'})
           }
           files.push(episode);
         }
+        else if(nameSplit.indexOf("srt")!=-1){
+          files.push(item);
+        }
         else if(nameSplit.indexOf("txt")!=-1){}
         else{
           cat.push(item);
-          console.log(files,cat);
         }  
       }
       res.send({"files":files, "cat":cat});  
