@@ -1,18 +1,26 @@
 window.addEventListener('load', init);
-
+/**
+ * initialise page
+ */
 function init() {
   document.querySelector("#film").addEventListener('click',main);
   document.querySelector("#tv").addEventListener('click',main);
-  document.querySelector("#ord").addEventListener('change',main)
+  document.querySelector("#ord").addEventListener('change',main);
   //document.querySelector("#cat").addEventListener('change',main);
 }
 
+/**
+ * get list of files from url inputted
+ * @param {string} dir url to get JSON from
+ * @returns list of file infor in JSON 
+ */
 async function getFiles(dir){
   // const tmpImg = document.createElement("img");
   // tmpImg.src = "/files/loading.gif";
   // tmpImg.id = "tmpImg";
   // const lib = document.querySelector("#library");
-  let files = await fetch(dir);
+  let url = window.location + "list/?folder=";
+  let files = await fetch(url + dir);
   let list = await files.json();
   const sort = document.querySelector("#ord");
 
@@ -41,6 +49,10 @@ async function getFiles(dir){
   return list;
 }
 
+/**
+ * function to create page
+ * @param {*} e 
+ */
 async function main(e){
   const ord = document.querySelector("#ord");
   if(e.target.id=="film"){
@@ -53,29 +65,28 @@ async function main(e){
     ord.classList = "hide";
   }
   
-  let url = window.location + "list/?folder=";
-  let urlAddition = "";
+  let url = "";
   const select = document.querySelector(".select").textContent;
   let level = 0;
 
   
   if (e.target.classList == "select"){
-    urlAddition = e.target.textContent;
+    url = e.target.textContent;
   } else if(e.target.id == "ord"){
-    urlAddition = select;
+    url = select;
   }
   else{
     if (e.target.id == "cat"){
-      urlAddition = `${select}/${e.target.value}`;
+      url = `${select}/${e.target.value}`;
       level = 1;
     }
     else{
       const cat = document.querySelector("#cat").value;
-      urlAddition = `${select}/${cat}/${e.target.value}`;
+      url = `${select}/${cat}/${e.target.value}`;
       level = 2;
     }
   }
-  url += urlAddition;
+  url
   
   const films = await getFiles(url);
   
@@ -93,7 +104,7 @@ async function main(e){
   //   }
   // } 
 
-  showVideo(films.files, urlAddition.split("/"));
+  showVideo(films.files, url.split("/"));
   if(films.cat.length > 1){
     if (level==0){
       showCatagories(films.cat);
@@ -114,7 +125,13 @@ async function main(e){
     
   }
 
+}
 
+/**
+ * Create video link (image,title,etc.)
+ * @param {list} videos list of all videos to display 
+ * @param {list} urlList video location
+ */
 async function showVideo(videos,urlList){
 
   const lib = document.querySelector("#library");
@@ -168,10 +185,9 @@ async function showVideo(videos,urlList){
       qual.classList = "qual";
       link.alt = child.title;
       image.src = child.imageBase + child.poster_path;
-      image.id = child.link;
-      image.addEventListener('click',startVideo);
-      image.title = child.overview;
-      console.log(child);
+      image.id = child.id;
+      image.addEventListener('click',showInfo);
+      // image.title = child.overview;
       
       div.prepend(score);
       div.prepend(qual);
@@ -181,9 +197,16 @@ async function showVideo(videos,urlList){
   }
 } 
 
+/**
+ * get all up to two child folders in dir
+ * get parent/child
+ * get parent/child/child2
+ * @param {list} cats first set of child dir
+ * @param {list} catTwo second set of child dir
+ */
 function showCatagories(cats,catTwo){
   const folders = document.querySelector("#folders");
-  
+
   if (catTwo){
     if(!document.querySelector("#cat2")){
       const span = document.createElement("span");
@@ -238,7 +261,11 @@ function showCatagories(cats,catTwo){
     
   }
 }
-}
+
+/**
+ * display video at the top of page
+ * @param {*} e 
+ */
 async function startVideo(e){
   if (document.querySelector("video")){
     document.querySelector("video").remove();
@@ -254,7 +281,19 @@ async function startVideo(e){
   const lib = document.querySelector("#videoCont");
   const vid = document.createElement('video');
   const source = document.createElement("source");
-  source.src = e.target.id;
+  if(document.querySelector(".select").textContent == "TV"){
+    source.src = e.target.id;
+  }else{
+    const filmData = await getFiles("Films");
+    for (film of filmData.files){
+      if (film.id == e.target.id){
+        source.src = film.link;
+        console.log(film);
+        
+      }
+    }
+    
+  }
   source.type="video/mp4";
   vid.controls = true;
   vid.autoplay = true;
@@ -263,4 +302,36 @@ async function startVideo(e){
   vid.appendChild(sub);
   lib.prepend(vid); 
   scroll(0,0);
+}
+
+async function showInfo(e){
+  if(document.querySelector(".info")){
+    document.querySelector(".info").remove();
+  }
+  const info = document.createElement("div");
+  info.classList = "info"
+  const p = document.createElement("p");
+  const title = document.createElement("h2");
+  const img = document.createElement("img");
+  const play = document.createElement("img");
+  play.classList = "play";
+  play.addEventListener("click",startVideo);
+  play.src = "/files/playBtn.png";
+  const filmData = await getFiles("Films");
+  for (film of filmData.files){
+    if (film.id == e.target.id){
+      title.textContent = film.title;
+      p.textContent = film.overview;
+      img.src = film.imageBase+film.backdrop_path;
+      play.id = film.id;
+      console.log(film);
+      
+    }
+  }
+  info.appendChild(title);
+  info.appendChild(p);
+  info.appendChild(play);
+  //info.appendChild(img);
+  e.target.parentNode.parentNode.parentNode.insertBefore(info,e.target.parentNode.parentNode.nextSibling);
+  // p.textContent = 
 }
