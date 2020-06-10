@@ -4,3 +4,5 @@
 *.avi
 films.json
 *.srt
+*.vtt
+*.txt

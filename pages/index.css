@@ -5,7 +5,7 @@ body{
   background: #141414;
 }
 nav{
-  position: relative;
+  position:relative;
   max-width: 1000px;
   margin: auto;
 }
@@ -62,6 +62,7 @@ option{
   text-align: center;
 }
 .videoCon{
+  position:relative;
   margin:5% auto;
   height:20rem;
   /* padding:0 0.5rem; */
@@ -81,13 +82,15 @@ option{
   z-index:1;
 }
 #ord{
-  float:right;
+  position:absolute;
+  right:5%;
+  top:40%;
 }
 .score,.qual{
   cursor:pointer;
   position: absolute;
   color:white;
-  top:-1850%;
+  z-index: 1;
   text-shadow: -1px -1px 5px #141414, 1px -1px 5px #141414, -1px 1px 5px #141414, 1px 1px 5px #141414;
 }
 .score{
@@ -115,7 +118,7 @@ h1{
 .select{
   color:rgb(255, 255, 255);
 }
-@media screen and (max-width:1000px){
+@media screen and (max-width:1100px){
   #library{
     grid-template-columns: auto auto auto auto;
   }
@@ -123,7 +126,12 @@ h1{
     display:none;
   }
 }
-@media screen and (max-width:800px){
+@media screen and (max-width:900px){
+  #library{
+    grid-template-columns:auto auto auto;
+  }
+}
+@media screen and (max-width:700px){
   #library{
     grid-template-columns: auto auto;
   }

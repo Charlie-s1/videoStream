@@ -170,8 +170,11 @@ async function showVideo(videos,urlList){
       image.src = child.imageBase + child.poster_path;
       image.id = child.link;
       image.addEventListener('click',startVideo);
-      link.appendChild(score);
-      link.appendChild(qual);
+      image.title = child.overview;
+      console.log(child);
+      
+      div.prepend(score);
+      div.prepend(qual);
     }
     i++;
     link.appendChild(image);
@@ -236,17 +239,28 @@ function showCatagories(cats,catTwo){
   }
 }
 }
-async function startVideo(e, sub){
+async function startVideo(e){
   if (document.querySelector("video")){
     document.querySelector("video").remove();
   }
-  
- 
+
+  const sub = document.createElement("track");
+  sub.src = `http://192.168.0.76:8080/files/Films/${e.target.alt}.vtt`;
+  sub.label = "English";
+  sub.kind = "captions";
+  // sub.default = true;
+  // sub.srclang = "en";
+
   const lib = document.querySelector("#videoCont");
   const vid = document.createElement('video');
-  vid.src = e.target.id;
+  const source = document.createElement("source");
+  source.src = e.target.id;
+  source.type="video/mp4";
   vid.controls = true;
   vid.autoplay = true;
+
+  vid.appendChild(source);
+  vid.appendChild(sub);
   lib.prepend(vid); 
   scroll(0,0);
 }
