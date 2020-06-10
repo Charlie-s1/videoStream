@@ -13,16 +13,17 @@ async function createFilmJson(){
     if(err) return console.log(err);
     for (item of fileNames){
       const nameSplit = item.split(/[().\[\]]+/);   
+
       if (exten.indexOf(nameSplit[nameSplit.length-1])!=-1){
-        let thisMovie = await movieInfo(nameSplit[0],nameSplit[1]);
+        let thisMovie = await movieInfo(nameSplit[0],nameSplit[1]);   
         thisMovie["link"] = `/files/Films/${item}`;
         thisMovie["quality"] = nameSplit[2];
 
         files.push(thisMovie);
-        console.log(thisMovie.title);
-        console.log(thisMovie.release_date);
-        console.log(thisMovie.vote_average);
-        
+        console.log("Title:    ",thisMovie.title);
+        console.log("Released: ",thisMovie.release_date);
+        console.log("Score:    ",thisMovie.vote_average);
+        console.log("-----");
         
         
         
