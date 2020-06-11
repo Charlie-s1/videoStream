@@ -89,15 +89,16 @@ option{
 .score,.qual{
   cursor:pointer;
   position: absolute;
+  bottom:0;
   color:white;
   z-index: 1;
   text-shadow: -1px -1px 5px #141414, 1px -1px 5px #141414, -1px 1px 5px #141414, 1px 1px 5px #141414;
 }
 .score{
-  right:5%;
+  left:5%;
 }
 .qual{
-  left:5%;
+  right:5%;
 }
 .videoLink{
   position:relative;
@@ -123,23 +124,23 @@ h1{
   color:white;
   text-shadow: -1px -1px 5px #141414, 1px -1px 5px #141414, -1px 1px 5px #141414, 1px 1px 5px #141414;
   margin:auto;
-  position: relative;
+  position: absolute;
+  z-index: 1;
   width:100%;
+  background-color: #141414b9;
 }
 .info p, .info h2{
-  position:absolute;
   float:left;
   text-align: center;
-
-}
-.info h2{
-  width:100%;
   margin:0;
 }
+.info h2{
+  margin:1rem auto;
+  width:100%;
+}
 .info p{
-  margin-top:25%;
   overflow-y: auto;
-  max-height: 60%;
+  max-height: 55%;
 }
 ::-webkit-scrollbar {
   width: 6px;
@@ -151,6 +152,7 @@ h1{
 } 
 ::-webkit-scrollbar-track {
   background-color: #141414;
+  /* border-radius:5px; */
 }
 .info img{
   max-height: 100%;

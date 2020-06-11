@@ -323,15 +323,14 @@ async function showInfo(e){
       title.textContent = film.title;
       p.textContent = film.overview;
       img.src = film.imageBase+film.backdrop_path;
-      play.id = film.id;
-      console.log(film);
-      
+      play.id = film.id;      
     }
   }
   info.appendChild(title);
   info.appendChild(p);
   info.appendChild(play);
-  //info.appendChild(img);
-  e.target.parentNode.parentNode.parentNode.insertBefore(info,e.target.parentNode.parentNode.nextSibling);
+  console.log(e.target.parentNode);
+  
+  e.target.parentNode.parentNode.insertBefore(info,e.target.parentNode);
   // p.textContent = 
 }
