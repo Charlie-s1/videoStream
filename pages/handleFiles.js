@@ -6,6 +6,7 @@ function init() {
   document.querySelector("#film").addEventListener('click',main);
   document.querySelector("#tv").addEventListener('click',main);
   document.querySelector("#ord").addEventListener('change',main);
+  main(null);
   //document.querySelector("#cat").addEventListener('change',main);
 }
 
@@ -15,10 +16,6 @@ function init() {
  * @returns list of file infor in JSON 
  */
 async function getFiles(dir){
-  // const tmpImg = document.createElement("img");
-  // tmpImg.src = "/files/loading.gif";
-  // tmpImg.id = "tmpImg";
-  // const lib = document.querySelector("#library");
   let url = window.location + "list/?folder=";
   let files = await fetch(url + dir);
   let list = await files.json();
@@ -55,7 +52,10 @@ async function getFiles(dir){
  */
 async function main(e){
   const ord = document.querySelector("#ord");
-  if(e.target.id=="film"){
+  if(e == null){
+    ord.classList = "category";
+  }
+  else if(e.target.id=="film"){
     film.classList = "select";
     tv.classList.remove("select");
     ord.classList = "category";
@@ -65,14 +65,12 @@ async function main(e){
     ord.classList = "hide";
   }
   
-  let url = "";
   const select = document.querySelector(".select").textContent;
+  let url = select;
   let level = 0;
 
-  
-  if (e.target.classList == "select"){
-    url = e.target.textContent;
-  } else if(e.target.id == "ord"){
+  if(e == null || e.target.classList == "select"){}
+  else if(e.target.id == "ord"){
     url = select;
   }
   else{
@@ -128,7 +126,7 @@ async function main(e){
 }
 
 /**
- * Create video link (image,title,etc.)
+ * Create video container (image,title,etc.)
  * @param {list} videos list of all videos to display 
  * @param {list} urlList video location
  */
@@ -138,6 +136,7 @@ async function showVideo(videos,urlList){
   lib.innerHTML = "";
   let infoList = [];
   let imageList = [];
+  let tvList = [];
   
   
   
@@ -153,7 +152,13 @@ async function showVideo(videos,urlList){
   // }
   
   let i = 0;
-  
+  if(urlList[0] == "TV"){
+    const tmpImg = document.createElement("img");
+    tmpImg.src = "/files/loading.gif";
+    tmpImg.id = "tmpImg";
+    const lib = document.querySelector("#library");
+    lib.appendChild(tmpImg);
+  }
   for (child of videos){
     const image = document.createElement("img");
     image.alt = child.title
@@ -162,11 +167,12 @@ async function showVideo(videos,urlList){
     const qual = document.createElement("p");
     const div = document.createElement("div");
     div.classList = "videoCon";
+    div.id = child.title;
     const link = document.createElement("a");
     link.classList = "videoLink";
     
 
-    lib.appendChild(div);
+    // lib.appendChild(div);
     div.appendChild(link);
     
     if (urlList[0] == "TV"){
@@ -178,7 +184,10 @@ async function showVideo(videos,urlList){
       title.classList = "title";
       title.addEventListener('click',startVideo);
       link.appendChild(title);
+      tvList.push(div)
     }else{
+      lib.appendChild(div);
+
       score.textContent = child.vote_average;
       score.classList = "score";
       qual.textContent = child.quality;
@@ -194,6 +203,12 @@ async function showVideo(videos,urlList){
     }
     i++;
     link.appendChild(image);
+  }
+  if(urlList[0] == "TV" && document.querySelector("#tmpImg")){
+    for (item of tvList){
+      lib.appendChild(item);
+    }
+    document.querySelector("#tmpImg").remove();
   }
 } 
 
@@ -272,9 +287,9 @@ async function startVideo(e){
   }
 
   const sub = document.createElement("track");
-  sub.src = `http://192.168.0.76:8080/files/Films/${e.target.alt}.vtt`;
-  sub.label = "English";
-  sub.kind = "captions";
+  const filmData = await getFiles("Films");
+  
+  
   // sub.default = true;
   // sub.srclang = "en";
 
@@ -289,7 +304,13 @@ async function startVideo(e){
       if (film.id == e.target.id){
         source.src = film.link;
         console.log(film);
-        
+        for (film of filmData.files){
+          if (film.id == e.target.id){
+            sub.src = `http://192.168.0.76:8080/files/Films/${film.title}.vtt`;
+            sub.label = "English";
+            sub.kind = "captions";
+          }
+        }
       }
     }
     
