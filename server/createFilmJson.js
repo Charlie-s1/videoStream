@@ -18,6 +18,7 @@ async function createFilmJson(){
         let thisMovie = await movieInfo(nameSplit[0],nameSplit[1]);   
         thisMovie["link"] = `/files/Films/${item}`;
         thisMovie["quality"] = nameSplit[2];
+        thisMovie["imageBase"] = "http://image.tmdb.org/t/p/w300_and_h450_bestv2"
 
         files.push(thisMovie);
         console.log("Title:    ",thisMovie.title);
