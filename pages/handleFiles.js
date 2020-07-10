@@ -6,10 +6,38 @@ function init() {
   document.querySelector("#film").addEventListener('click',main);
   document.querySelector("#tv").addEventListener('click',main);
   document.querySelector("#ord").addEventListener('change',main);
+  document.addEventListener('keydown', handleKeyPress);
+  document.querySelector("#search").addEventListener('input',search);
   main(null);
   //document.querySelector("#cat").addEventListener('change',main);
 }
 
+function handleKeyPress(e){
+  // alert(e.keyCode);
+  const vid = document.querySelector("video");
+  if(vid){
+    // if F pressed
+    if (e.keyCode == 70){
+      vid.requestFullscreen();
+    }
+    //if K pressed
+    if (e.keyCode == 75){
+      if (vid.paused){
+        vid.play();
+      }else{
+        vid.pause();
+      }
+    }
+    //if J or *LEFT* pressed 74 37
+    if (e.keyCode == 74 || e.keyCode == 37){
+      vid.currentTime -= 5;
+    }
+    //if L or *RIGHT* pressed 76 39
+    if (e.keyCode == 76 || e.keyCode == 39){
+      vid.currentTime += 5;
+    }
+  }
+}
 /**
  * get list of files from url inputted
  * @param {string} dir url to get JSON from
@@ -52,17 +80,24 @@ async function getFiles(dir){
  */
 async function main(e){
   const ord = document.querySelector("#ord");
+  const search = document.querySelector("#search");
+  const film = document.querySelector("#film");
+  const tv = document.querySelector("#tv");
+
   if(e == null){
     ord.classList = "category";
+    search.classList = "";
   }
   else if(e.target.id=="film"){
     film.classList = "select";
     tv.classList.remove("select");
     ord.classList = "category";
+    search.classList = "";
   }else if(e.target.id=="tv"){
     tv.classList = "select";
     film.classList.remove("select");
     ord.classList = "hide";
+    search.classList = "hide";
   }
   
   const select = document.querySelector(".select").textContent;
@@ -303,7 +338,7 @@ async function startVideo(e){
     for (film of filmData.files){
       if (film.id == e.target.id){
         source.src = film.link;
-        console.log(film);
+
         for (film of filmData.files){
           if (film.id == e.target.id){
             sub.src = `http://192.168.0.76:8080/files/Films/${film.title}.vtt`;
@@ -350,8 +385,23 @@ async function showInfo(e){
   info.appendChild(title);
   info.appendChild(p);
   info.appendChild(play);
-  console.log(e.target.parentNode);
   
   e.target.parentNode.parentNode.insertBefore(info,e.target.parentNode);
   // p.textContent = 
+}
+/**
+ * function to hide films not included in text
+ * @param {*} e 
+ */
+function search(e){
+  const films = document.querySelector("#library").childNodes;
+  for (film of films){
+    if (!film.id.toLowerCase().includes(e.target.value.toLowerCase())){
+      film.classList.add("hide");
+    }else{
+      film.classList.remove("hide");
+    }
+    
+    
+  }
 }

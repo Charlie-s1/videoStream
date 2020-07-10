@@ -1,12 +1,30 @@
 *{
   font-family: sans-serif;
+  scrollbar-width: thin;
+  transition: .5s;
 }
 body{
   background: #141414;
+  overflow-x: hidden;
+}
+h1{
+  color:rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: inline;
+  font-size: 5rem;
+  margin-right: 2rem;
+  margin-left:5px;
+}
+.select{
+  color:rgb(255, 255, 255);
 }
 nav{
-  position:relative;
-  max-width: 1000px;
+  position:sticky;
+  top:0;
+  z-index: 10000;
+  background-color: #141414e1;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   margin: auto;
 }
 nav a{
@@ -17,6 +35,31 @@ nav a{
   color: white;
   text-decoration: none;
 }
+#search{
+  position:absolute;
+  right:125px;
+  top:40%;
+  background:transparent;
+  border:none;
+  
+  color:white;
+  width:3.5rem;
+  transition: .5s;
+}
+#search:focus{
+  width:10rem;
+  outline:none;
+  border-bottom: 1px solid #F5F5F5;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+#ord{
+  position:absolute;
+  right:10px;
+  top:40%;
+  transition: .5s;
+}
 .hide{
   display:none;
 }
@@ -25,9 +68,26 @@ nav a{
   font-size: 1rem;
 }
 .category{
+  position: absolute;
   color:white;
   border:none;
   background-color:rgba(0, 0, 0, 0);
+}
+#folders{
+  position: absolute;
+  top:40%;
+  right:50%;
+}
+#cat{
+  left:0;
+}
+#cat2{
+  left:200px;
+}
+#between{
+  position:absolute;
+  top:40%;
+  left:175px;
 }
 .category:focus,option{
   outline: none !important;
@@ -43,12 +103,18 @@ option{
   grid-column-end:6;
 }
 #videoCont{
-  max-width: 1200px;
   margin:auto;
 }
 #videoCont video{
-  width:60%;
-  margin:10px 20%;
+  /* width:60%; */
+  position: relative;
+  /* height: 10%; */
+  left:50%;
+  transform: translate(-50%);
+}
+video{
+  width:80%;
+  height:auto;
 }
 #videoCont video:focus{
   outline:none;
@@ -58,7 +124,7 @@ option{
   margin:auto;
   height:100%;
   display: grid;
-  grid-template-columns: repeat(5,1fr);
+  grid-template-columns: repeat(8,1fr);
   text-align: center;
 }
 .videoCon, .info{
@@ -81,11 +147,7 @@ option{
   width: 100%;
   z-index:1;
 }
-#ord{
-  position:absolute;
-  right:5%;
-  top:40%;
-}
+
 .score,.qual{
   cursor:pointer;
   position: absolute;
@@ -109,16 +171,7 @@ img{
   cursor: pointer;
   height:100%;
 }
-h1{
-  color:rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  display: inline;
-  font-size: 5rem;
-  margin-right: 2rem;
-}
-.select{
-  color:rgb(255, 255, 255);
-}
+
 .info{
   max-width:100rem;
   color:white;
@@ -132,17 +185,19 @@ h1{
 .info p, .info h2{
   float:left;
   text-align: center;
-  margin:0;
+  padding:0 .25rem;
 }
 .info h2{
-  margin:1rem auto;
+  margin:10% auto auto auto;
   width:100%;
-  max-height:20%;
+  height:20%;
   overflow:auto;
 }
 .info p{
   overflow-y: auto;
-  max-height: 52.5%;
+  height: 52.5%;
+  margin:auto;
+
 }
 ::-webkit-scrollbar {
   width: 6px;
@@ -170,8 +225,27 @@ h1{
   max-width:3rem;
   height:auto;
 }
-
-@media screen and (max-width:1100px){
+@media screen and (max-width:1700px){
+  #library{
+    grid-template-columns: repeat(7,1fr);
+  }
+}
+@media screen and (max-width:1500px){
+  #library{
+    grid-template-columns: repeat(6,1fr);
+  }
+}
+@media screen and (max-width:1300px){
+  #library{
+    grid-template-columns: repeat(5,1fr);
+  }
+}
+@media screen and (max-width:1150px){
+  #library{
+    grid-template-columns: repeat(4,1fr);
+  }
+}
+@media screen and (max-width:950px){
   #library{
     grid-template-columns: repeat(5,1fr);
   }
@@ -179,15 +253,26 @@ h1{
     height: 15rem;
   }
 }
-@media screen and (max-width:840px){
+@media screen and (max-width:800px){
   #library{
     grid-template-columns: repeat(4,1fr);
   }
-
 }
 @media screen and (max-width:660px){
   #library{
     grid-template-columns: repeat(3,1fr);
+  }
+  #ord{
+    right:-100px;
+    /* display:none; */
+  }
+  #search{
+    right:5px;
+    width:5rem;
+  }
+  #folders{
+    top:100%;
+    left:0;
   }
 }
 @media screen and (max-width:450px){
@@ -195,7 +280,7 @@ h1{
     grid-template-columns: repeat(2,1fr);
   }
 }
-@media screen and (min-height:1000px){
+@media screen and (min-height:1000px) and (max-width:1000px){
   h1{
     font-size: 10rem;
   }
@@ -216,5 +301,19 @@ h1{
   }
   .videoCon, .info{
     height: 29rem;
+  }
+  #ord{
+    display:none;
+  }
+  #search{
+    height:4rem;
+    right:0;
+    top:45%;
+    width:12rem;
+    font-size: 3rem;
+  }
+  #search:focus{
+    width:17rem;
+    outline:none;
   }
 }

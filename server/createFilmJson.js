@@ -25,9 +25,6 @@ async function createFilmJson(){
         console.log("Released: ",thisMovie.release_date);
         console.log("Score:    ",thisMovie.vote_average);
         console.log("-----");
-        
-        
-        
       }
       else if(nameSplit.indexOf("txt")!=-1){}
       else{
