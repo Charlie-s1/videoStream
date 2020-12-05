@@ -333,6 +333,15 @@ async function startVideo(e){
   const source = document.createElement("source");
   if(document.querySelector(".select").textContent == "TV"){
     source.src = e.target.id;
+    const lib = document.querySelector("#library");
+    //change colour of playing
+    for (child of lib.childNodes){
+      if (child != e.target.parentNode.parentNode){
+        child.style.opacity = 0.5;
+      }else{
+        e.target.parentNode.parentNode.style.opacity = 1;
+      }
+    }
   }else{
     const filmData = await getFiles("Films");
     for (film of filmData.files){
