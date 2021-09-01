@@ -7,7 +7,7 @@ To start
 1) run command `npm i` to install required packages
 2) start the application using `npm start`
 3) Place files in either of the folders ("files/Films" or "files/TV")
-    * film files must follow format: "Films/name of film(release year)[quality].mp4"
+    * film files must follow format: "Films/***name of film***(***release year***)[***quality***].mp4"
     * TV files must be placed inside a folder containing name of show  
-    (e.g. "TV/name of show/*episode*.mp4" or "TV/name of show/*episode*.mp4")
+    (e.g. "TV/***Name of show***/***Episode***.mp4" or "TV/***Name of show***/***Series number***/***Episode***.mp4")
 4) If new .mp4 files placed in files/Films run `npm run createFilmJson` to add to the website
