@@ -97,7 +97,7 @@ option{
   border:none;
 }
 #tmpImg{
-  height:8rem;
+  height:30rem;
   margin:auto;
   grid-column-start:1;
   grid-column-end:10;
