@@ -1,43 +1,16 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
-const up = require('express-fileupload');
 const organise = require('./organise');
 const path = require('path');
-const movieInfo = require('movie-info');
 const movieArt = require('movie-art');
 
 
 app.use(express.static(path.join(__dirname,'../pages')));
-app.use(up());
-//app.use(express.urlencoded());
 
-app.post("/uploadFiles",async function(req,res){
-  let dir = path.join(__dirname, `../pages/files/${req.body.folder}/`);
-  if (!req.body.lv2){
-    dir += req.body.lv1;
-  }else{
-    dir += `${req.body.lv1}/${req.body.lv2}`;
-  }
-  organise.newDirs(req.body.folder,req.body.lv1,req.body.lv2)
-  if (req.files.video.length > 1){
-    for (file of req.files.video){
-      fs.writeFile(`${dir}/${file.name}`, file.data, (err) => {
-        if(err) return console.log(err);
-      })
-    }
-    
-    res.send(JSON.stringify(req.body.file));
-  }else{
-    fs.writeFile(`${dir}/${req.files.video.name}`, req.files.video.data, (err) => {
-      if(err) return console.log(err);
-      console.log("up");
-    })
-  }
-  
-  
-});
-
+/**
+ * 
+ */
 app.get("/list",async function(req,res){
   let location = path.join(__dirname, `../pages/files/${req.query.folder}`);
   const pathList = req.query.folder.split('/');
@@ -60,7 +33,8 @@ app.get("/list",async function(req,res){
             "quality": nameSplit[2],
             "title": nameSplit[0],
             "link" : `/files/${req.query.folder}/${item}`,
-            "poster": movieArt(pathList[1],{type:'tv'})
+            // "poster": movieArt(pathList[1],{type:'tv'})
+            "poster": null
           }
           files.push(episode);
         }
@@ -74,10 +48,7 @@ app.get("/list",async function(req,res){
       }
       res.send({"files":files, "cat":cat});  
     });
-  }
- 
-  
-    
+  } 
 });
 
 app.get("/data", function(req,res){
@@ -86,4 +57,5 @@ app.get("/data", function(req,res){
   res.send(data);
 });
 
+console.log("videoStream running on 8080")
 app.listen(8080);

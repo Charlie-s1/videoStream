@@ -196,7 +196,9 @@ async function showVideo(videos,urlList){
   }
   for (child of videos){
     const image = document.createElement("img");
-    image.alt = child.title
+    image.alt = child.title;
+    console.log(child);
+    image.title = `Title - ${child.title}\nYear - ${child.release_date}`;
     const title = document.createElement("p");
     const score = document.createElement("p");
     const qual = document.createElement("p");
@@ -365,6 +367,7 @@ async function startVideo(e){
 
   vid.appendChild(source);
   vid.appendChild(sub);
+  vid.requestFullscreen();
   lib.prepend(vid); 
   scroll(0,0);
 }
