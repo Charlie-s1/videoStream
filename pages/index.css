@@ -2,6 +2,11 @@
   font-family: sans-serif;
   scrollbar-width: thin;
   transition: .5s;
+  margin:0;
+  padding:0;
+}
+body,html{
+  min-height:100%;
 }
 body{
   background: #141414;
@@ -103,18 +108,16 @@ option{
   grid-column-end:10;
 }
 #videoCont{
+  width:100%;
+  height:100%;
+}
+#videoContainer{
   margin:auto;
+  width:66%;
 }
 #videoCont video{
-  /* width:60%; */
-  position: relative;
-  /* height: 10%; */
-  left:50%;
-  transform: translate(-50%);
-}
-video{
-  width:80%;
-  height:auto;
+  width:100%;
+  height: 50vh;
 }
 #videoCont video:focus{
   outline:none;
@@ -122,7 +125,7 @@ video{
 #library{
   width:100%;
   margin:auto;
-  height:100%;
+  max-height:90%;
   display: grid;
   grid-template-columns: repeat(8,1fr);
   text-align: center;
@@ -131,23 +134,7 @@ video{
   position:relative;
   margin:5% auto;
   height:20rem;
-  /* padding:0 0.5rem; */
-  /* background: rgba(255, 255, 255, 0.2); */
 }
-.title{
-  cursor: pointer;
-  word-wrap: break-word;
-  text-align: center;
-  color: white;
-  background: rgba(0, 0, 0, 0.705);
-  position: absolute;
-  top:-50px;
-  height:300%;
-  line-height: 1.5rem;
-  width: 100%;
-  z-index:1;
-}
-
 .score,.qual{
   cursor:pointer;
   position: absolute;
@@ -162,10 +149,24 @@ video{
 .qual{
   right:5%;
 }
-.videoLink{
+.videoPosterCont{
   position:relative;
   height:100%;
   width:100%;
+
+}
+.title{
+  cursor: pointer;
+  word-wrap: break-word;
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.705);
+  position: absolute;
+  bottom:0;
+  min-height:3rem;
+  line-height: 1.5rem;
+  width: 100%;
+  z-index:100;
 }
 img{
   cursor: pointer;
@@ -209,7 +210,6 @@ img{
 } 
 ::-webkit-scrollbar-track {
   background-color: #141414;
-  /* border-radius:5px; */
 }
 .info img{
   max-height: 100%;
@@ -224,6 +224,9 @@ img{
   transform: translate(-50%);
   max-width:3rem;
   height:auto;
+}
+.playingNow{
+  box-shadow: 0px 0px 10px 1px #878787;
 }
 @media screen and (max-width:1700px){
   #library{
@@ -306,7 +309,6 @@ img{
     max-width:6rem;
   }
   #library{
-    /* margin-top: 5rem; */
     grid-template-columns: repeat(3,1fr);
   }
   .videoCon, .info{

@@ -6,8 +6,10 @@ function init() {
   document.querySelector("#film").addEventListener('click',main);
   document.querySelector("#tv").addEventListener('click',main);
   document.querySelector("#ord").addEventListener('change',main);
-  document.addEventListener('keydown', handleKeyPress);
   document.querySelector("#search").addEventListener('input',search);
+  
+  document.addEventListener('keydown', handleKeyPress);
+
   main(null);
   //document.querySelector("#cat").addEventListener('change',main);
 }
@@ -197,7 +199,6 @@ async function showVideo(videos,urlList){
   for (child of videos){
     const image = document.createElement("img");
     image.alt = child.title;
-    console.log(child);
     image.title = `Title - ${child.title}\nYear - ${child.release_date}`;
     const title = document.createElement("p");
     const score = document.createElement("p");
@@ -205,8 +206,8 @@ async function showVideo(videos,urlList){
     const div = document.createElement("div");
     div.classList = "videoCon";
     div.id = child.title;
-    const link = document.createElement("a");
-    link.classList = "videoLink";
+    const link = document.createElement("div");
+    link.classList = "videoPosterCont";
     
 
     // lib.appendChild(div);
@@ -332,17 +333,15 @@ async function startVideo(e){
 
   const lib = document.querySelector("#videoCont");
   const vid = document.createElement('video');
+  vid.id="videoPlayer";
+  vid.addEventListener('ended',nextVideo,false);
   const source = document.createElement("source");
   if(document.querySelector(".select").textContent == "TV"){
     source.src = e.target.id;
     const lib = document.querySelector("#library");
     //change colour of playing
     for (child of lib.childNodes){
-      if (child != e.target.parentNode.parentNode){
-        child.style.opacity = 0.5;
-      }else{
-        e.target.parentNode.parentNode.style.opacity = 1;
-      }
+      child == e.target.parentNode.parentNode ? child.classList.add("playingNow") : child.classList.remove("playingNow");
     }
   }else{
     const filmData = await getFiles("Films");
@@ -363,12 +362,12 @@ async function startVideo(e){
   }
   source.type="video/mp4";
   vid.controls = true;
-  vid.autoplay = true;
-
   vid.appendChild(source);
   vid.appendChild(sub);
-  vid.requestFullscreen();
-  lib.prepend(vid); 
+  const div = document.createElement("div");
+  div.id = "videoContainer";
+  div.appendChild(vid)
+  lib.prepend(div); 
   scroll(0,0);
 }
 
