@@ -40,6 +40,7 @@ nav a{
   color: white;
   text-decoration: none;
 }
+
 #search{
   position:absolute;
   right:125px;
@@ -112,6 +113,7 @@ option{
   height:100%;
 }
 #videoContainer{
+  position: relative;
   margin:auto;
   width:60%;
 }
@@ -122,6 +124,8 @@ option{
 #videoPlayer:focus{
   outline:none;
 }
+
+
 #library{
   width:100%;
   margin:auto;

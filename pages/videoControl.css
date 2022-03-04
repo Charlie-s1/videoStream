@@ -1,0 +1,33 @@
+#customControls{
+    position: absolute;
+    top:0;
+    height:100%;
+    width:100%;
+    margin:auto;
+    z-index: 1000;
+    font-size: 2rem;
+    color: white;
+}
+#customControls > p{
+    cursor: pointer;
+    width:fit-content;
+    position: absolute;
+    bottom:1rem;
+}
+#playingTitle{
+    top:1rem;
+    left:1rem;
+    width:100%;
+    height:fit-content;
+    cursor:default !important;
+}
+#playpause{
+    left:1rem;
+}
+#nextVid{
+    left:4rem;
+}
+#fullScreen{
+    right:1rem;
+    bottom:0;
+}

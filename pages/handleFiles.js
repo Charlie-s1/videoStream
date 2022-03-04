@@ -15,12 +15,11 @@ function init() {
 }
 
 function handleKeyPress(e){
-  // alert(e.keyCode);
-  const vid = document.querySelector("video");
+  const vid = document.querySelector("#videoPlayer");
   if(vid){
     // if F pressed
     if (e.keyCode == 70){
-      vid.requestFullscreen();
+      document.querySelector("#videoContainer").requestFullscreen();
     }
     //if K pressed
     if (e.keyCode == 75){
@@ -325,7 +324,7 @@ function showCatagories(cats,catTwo){
  */
 async function startVideo(e){
   if (document.querySelector("video")){
-    document.querySelector("video").remove();
+    document.querySelector("video").parentElement.remove();
   }
 
   const sub = document.createElement("track");
@@ -348,6 +347,9 @@ async function startVideo(e){
       child == e.target.parentNode.parentNode ? child.classList.add("playingNow") : child.classList.remove("playingNow");
     }
   }else{
+    for (child of document.querySelector("#library").childNodes){
+      child == e.target.parentNode.parentNode ? child.classList.add("playingNow") : child.classList.remove("playingNow");
+    }
     const filmData = await getFiles("Films");
     for (film of filmData.files){
       if (film.id == e.target.id){
@@ -365,12 +367,14 @@ async function startVideo(e){
     
   }
   source.type="video/mp4";
-  vid.controls = true;
+  // vid.controls = true;
   vid.appendChild(source);
   vid.appendChild(sub);
   const div = document.createElement("div");
   div.id = "videoContainer";
-  div.appendChild(vid)
+  div.appendChild(vid);
+  const customControls = createControls();
+  div.appendChild(customControls);
   lib.prepend(div); 
   scroll(0,0);
 }
