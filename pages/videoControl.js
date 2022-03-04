@@ -1,3 +1,6 @@
+let mouseMoved = false;
+let mouseStartedMoving = false;
+
 function nextVideo(e){
     if(document.querySelector(".select").textContent == "TV"){
         const playing = document.querySelector(".playingNow");
@@ -28,7 +31,14 @@ function fullScreenVid(e){
 }
 function createControls(){
     const div = document.createElement("div");
+    div.addEventListener("mousemove",(e)=>{
+        mouseStartedMoving = true;
+        mouseMoved = true;
+        document.querySelector("#customControls").classList.add("show")
+    });
+
     const vid = document.querySelector("#videoPlayer") || {duration:0} ;
+    div.classlist = "show";
     div.id = "customControls";
 
     const playingTitle = document.createElement("p");
@@ -56,3 +66,15 @@ function createControls(){
 
     return div
 }
+
+setInterval(()=>{
+    if(mouseMoved && mouseStartedMoving){
+        document.querySelector("#customControls") ? document.querySelector("#customControls").classList.add("show"):null;
+        console.log("move");
+        mouseStartedMoving = false;
+    }
+    else{
+        document.querySelector("#customControls") ? document.querySelector("#customControls").classList.remove("show"):null;
+    }
+    mouseMoved = false;
+},5000)
