@@ -214,6 +214,9 @@ async function showVideo(videos,urlList){
     div.appendChild(link);
     
     if (urlList[0] == "TV"){
+      const titleCont = document.createElement("div");
+      titleCont.classList = "titleCont";
+
       image.src = await movieArt(urlList[1], {type:'tv', size:'w185'});
       title.textContent = child.title;
       image.id = child.link;
@@ -221,7 +224,8 @@ async function showVideo(videos,urlList){
       title.id = child.link;
       title.classList = "title";
       title.addEventListener('click',startVideo);
-      link.appendChild(title);
+      titleCont.appendChild(title);
+      link.appendChild(titleCont);
       tvList.push(div)
     }else{
       lib.appendChild(div);
