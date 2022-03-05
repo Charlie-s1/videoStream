@@ -1,4 +1,6 @@
 #customControls{
+    background: linear-gradient(180deg,rgba(0, 0, 0, 0.9) 0%,rgba(0,0,0,0) 15%,rgba(0,0,0,0) 85%,rgba(0, 0, 0, 0.9) 100%);
+    background: linear-gradient();
     position: absolute;
     top:0;
     height:100%;
@@ -12,7 +14,7 @@
 .show{
     opacity:1 !important;
 }
-#customControls > p{
+#customControls > p, #customControls > input{
     cursor: pointer;
     width:fit-content;
     position: absolute;
@@ -26,12 +28,21 @@
     cursor:default !important;
 }
 #playpause{
-    left:1rem;
+    left:1%;
 }
 #nextVid{
-    left:4rem;
+    left:7%;
+}
+#time{
+    left:15%;
+    width:75% !important;
+    height:2.3rem;
+}
+#timeRemaining{
+    top:1rem;
+    right:1rem;
 }
 #fullScreen{
-    right:1rem;
+    right:1%;
     bottom:0;
 }

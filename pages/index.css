@@ -116,6 +116,9 @@ option{
   position: relative;
   margin:auto;
   width:60%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
 }
 #videoPlayer{
   width:100%;
@@ -164,7 +167,6 @@ option{
   word-wrap: break-word;
   text-align: center;
   color: white;
-  /* background: linear-gradient(180deg,rgba(0, 0, 0, 0) 0%,rgba(0,0,0,0.8) 30%); */
   background: rgba(0,0,0,0.8);
   position: absolute;
   bottom:0;
@@ -320,6 +322,7 @@ img{
   }
   #videoContainer{
     width:100%;
+    
   }
   #library{
     grid-template-columns: repeat(3,1fr);
