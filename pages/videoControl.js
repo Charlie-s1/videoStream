@@ -9,15 +9,15 @@ function nextVideo(e){
     }else{
     }
 }
-function playPauseVid(e){
+function playPauseVid(){
     const vid = document.querySelector("#videoPlayer");
+    const button = document.querySelector("#playpause");
     if(vid.paused){
         vid.play();
-        e.target.textContent = "| |";
+        button.textContent = "| |";
     } else{
         vid.pause();
-        e.target.textContent = ">";
-        // console.log(vid.time-divider);
+        button.textContent = ">";
     }
 }
 function fullScreenVid(e){
@@ -31,10 +31,13 @@ function fullScreenVid(e){
 }
 function updateTime(e){
     const vid = document.querySelector("#videoPlayer");
-    vid.currentTime = e.target.value/100*vid.duration
+    vid.currentTime = e.target.value/1000*vid.duration
 }
 function createControls(){
     const div = document.createElement("div");
+    const bottomBar = document.createElement("div");
+    bottomBar.id="bottomBar";
+
     div.addEventListener("mousemove",(e)=>{
         mouseStartedMoving = true;
         mouseMoved = true;
@@ -47,7 +50,6 @@ function createControls(){
 
     const vid = document.querySelector("#videoPlayer") || {currentTime:0} ;
     div.id = "customControls";
-
     const playingTitle = document.createElement("p");
     playingTitle.id = "playingTitle";
     playingTitle.textContent = document.querySelector(".playingNow").id;
@@ -62,39 +64,43 @@ function createControls(){
     playpause.id = "playpause";
     playpause.textContent = ">";
     playpause.addEventListener("click",playPauseVid);
-    div.appendChild(playpause);
+    bottomBar.appendChild(playpause);
 
     const next = document.createElement("p");
     next.id = "nextVid";
-    next.textContent = ">>";
+    next.textContent = ">|";
     next.addEventListener("click",nextVideo);
-    div.appendChild(next);
-
-    const fullScreen = document.createElement("p");
-    fullScreen.id = "fullScreen";
-    fullScreen.textContent = "[ ]";
-    fullScreen.addEventListener("click",fullScreenVid);
-    div.appendChild(fullScreen);
+    bottomBar.appendChild(next);
 
     const time = document.createElement("input");
     time.id = "time";
     time.type = "range";
+    time.max=1000;
     time.value = vid.currentTime;
     time.addEventListener("change",updateTime);
-    div.appendChild(time);
+    bottomBar.appendChild(time);
 
+    const sub = document.createElement("p");
+    sub.id = "sub";
+    sub.classList = "noSub right";
+    sub.textContent = "S";
+    bottomBar.appendChild(sub);
+
+    const fullScreen = document.createElement("p");
+    fullScreen.id = "fullScreen";
+    fullScreen.classList = "right";
+    fullScreen.textContent = "[ ]";
+    fullScreen.addEventListener("click",fullScreenVid);
+    bottomBar.appendChild(fullScreen);
+
+    div.appendChild(bottomBar);
     div.classList = "show";
     return div
 }
 
 setInterval(()=>{
     const controls = document.querySelector("#customControls") ? document.querySelector("#customControls") : null;
-    const vid = document.querySelector("video") || {currentTime:0,duration:0};
-    // if(document.querySelector("#time")){
-    //     document.querySelector("#time").value = (vid.currentTime/vid.duration)*100 || 0;
-    //     document.querySelector("#timeRemaining").textContent = `${numToTime(vid.currentTime)}/${numToTime(vid.duration)}`;
-    // }
-
+    
     if(mouseMoved && mouseStartedMoving){
         controls ? controls.classList.add("show") : null;
         mouseStartedMoving = false;
@@ -114,7 +120,7 @@ setInterval(()=>{
 setInterval(()=>{
     const vid = document.querySelector("video") || {currentTime:0,duration:0};
     if(document.querySelector("#time")){
-        document.querySelector("#time").value = (vid.currentTime/vid.duration)*100 || 0;
+        document.querySelector("#time").value = (vid.currentTime/vid.duration)*1000 || 0;
         document.querySelector("#timeRemaining").textContent = `${numToTime(vid.currentTime)}/${numToTime(vid.duration)}`;
     }
 },1000)
@@ -124,9 +130,16 @@ function numToTime(rawNum){
     let hr = Math.floor(num/3600);
     let min = Math.floor((num - (hr * 3600)) / 60);
     let sec = num - (hr * 3600) - (min * 60);
-
+    let time = "";
+    
     if (hr   < 10) {hr   = "0"+hr;}
     if (min < 10) {min = "0"+min;}
     if (sec < 10) {sec = "0"+sec;}
-    return hr+':'+min+':'+sec;
+
+    if (hr >= 1){
+        time = `${hr}:${min}:${sec}`;
+    }else{
+        time = `${min}:${sec}`;
+    }
+    return time;
 }

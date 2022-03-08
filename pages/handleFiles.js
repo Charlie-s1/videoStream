@@ -23,11 +23,7 @@ function handleKeyPress(e){
     }
     //if K pressed
     if (e.keyCode == 75){
-      if (vid.paused){
-        vid.play();
-      }else{
-        vid.pause();
-      }
+      playPauseVid();
     }
     //if J or *LEFT* pressed 74 37
     if (e.keyCode == 74 || e.keyCode == 37){

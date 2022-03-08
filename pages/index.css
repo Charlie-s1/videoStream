@@ -270,6 +270,9 @@ img{
   .videoCon, .info{
     height: 15rem;
   }
+  #videoContainer{
+    width:100%;
+  }
 }
 @media screen and (max-width:800px){
   #library{
@@ -319,10 +322,6 @@ img{
   }
   .play{
     max-width:6rem;
-  }
-  #videoContainer{
-    width:100%;
-    
   }
   #library{
     grid-template-columns: repeat(3,1fr);
