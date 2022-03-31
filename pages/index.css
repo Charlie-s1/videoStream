@@ -238,7 +238,9 @@ img{
   height:auto;
 }
 .playingNow{
-  box-shadow: 0px 0px 10px 1px #878787;
+  position:relative;
+  top:-.5rem;
+  border-bottom:.25rem solid #fff;
 }
 @media screen and (max-width:1700px){
   #library{

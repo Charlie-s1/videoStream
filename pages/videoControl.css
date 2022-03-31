@@ -37,10 +37,11 @@
     position:absolute;
     bottom:0;
     width:95%;
+    height:3.5rem;
     margin:0 2.5%;
     display: grid;
     grid-template-columns: .5fr .5fr 6fr .5fr .5fr;
-    padding-bottom: .5rem;
+    cursor:default !important;
 }
 #bottomBar > *{
     margin: auto;
@@ -57,15 +58,15 @@
     -webkit-appearance: none;
     position:absolute;
     display:flex;
-    top:-1.5rem;
+    top:0;
     width:100%;
     height:5px;
     border-radius: 5px;
     overflow: hidden;
+    background: #373737;
 }
 #time::-webkit-slider-runnable-track{
     background: #373737;
-    height:5px;
     border-radius: 5px;
 }
 #time::-webkit-slider-thumb {
@@ -90,13 +91,13 @@
     background:#e50914;
     border:#e50914;
 }
-#time::-webkit-slider-runnable-track
 #time::-moz-range-progress {
     background-color: #e50914; 
 }
 #time::-ms-fill-lower {
     background-color: #e50914'; 
 }
+
 #fullScreen{
     grid-column-start: 5;
 }

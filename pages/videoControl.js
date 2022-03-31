@@ -20,13 +20,24 @@ function playPauseVid(){
         button.textContent = ">";
     }
 }
+function triggerSub(e){
+    e.target.classList.toggle("noSub");
+    const vid = document.querySelector("#videoPlayer");
+
+    if (e.target.classList.contains("noSub")){
+        vid.textTracks[0].mode = "disabled";
+    }else{
+        vid.textTracks[0].mode = "showing";
+    }
+}
 function fullScreenVid(e){
+    const button = document.querySelector("#fullScreen");
     if(document.fullscreenElement){
         document.exitFullscreen();
-        e.target.textContent = "[ ]";
+        button.textContent = "[ ]";
     }else{
         document.querySelector("#videoContainer").requestFullscreen();
-        e.target.textContent = "X";
+        button.textContent = "X";
     }
 }
 function updateTime(e){
@@ -77,6 +88,8 @@ function createControls(){
     time.type = "range";
     time.max=1000;
     time.value = vid.currentTime;
+    time.addEventListener("mouseenter",(e)=>{e.target.classList.add("timeHover")});
+    time.addEventListener("mouseleave",(e)=>{e.target.classList.remove("timeHover")});
     time.addEventListener("change",updateTime);
     bottomBar.appendChild(time);
 
@@ -84,6 +97,7 @@ function createControls(){
     sub.id = "sub";
     sub.classList = "noSub right";
     sub.textContent = "S";
+    sub.addEventListener("click",triggerSub);
     bottomBar.appendChild(sub);
 
     const fullScreen = document.createElement("p");

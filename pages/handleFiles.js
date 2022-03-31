@@ -19,7 +19,7 @@ function handleKeyPress(e){
   if(vid){
     // if F pressed
     if (e.keyCode == 70){
-      document.querySelector("#videoContainer").requestFullscreen();
+      fullScreenVid();
     }
     //if K pressed
     if (e.keyCode == 75){
@@ -353,9 +353,10 @@ async function startVideo(e){
 
         for (film of filmData.files){
           if (film.id == e.target.id){
-            sub.src = `http://192.168.0.76:8080/files/Films/${film.title}.vtt`;
+            sub.src = `/files/Films/${film.title}.vtt`;
             sub.label = "English";
-            sub.kind = "captions";
+            sub.srclang = "en"
+            sub.kind = "subtitles";
           }
         }
       }
