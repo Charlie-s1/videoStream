@@ -11,7 +11,7 @@
   "author": "charlie",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "ffmetadata": "^1.6.0",
     "movie-art": "^1.0.7",
     "movie-info": "^2.0.4",
