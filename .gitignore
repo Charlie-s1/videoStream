@@ -6,3 +6,4 @@ films.json
 *.srt
 *.vtt
 *.txt
+config.js

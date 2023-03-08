@@ -6,16 +6,19 @@
   "scripts": {
     "start": "node server/server",
     "test": "nodemon server/server",
-    "createFilmJson": "node server/createFilmJson"
+    "createFilmJson": "node server/createFilmJson",
+    "newCreate": "node server/getFilmInfo"
   },
   "author": "charlie",
   "license": "ISC",
   "dependencies": {
+    "-": "^0.0.1",
     "express": "^4.17.1",
     "ffmetadata": "^1.6.0",
     "movie-art": "^1.0.7",
     "movie-info": "^2.0.4",
     "nodemon": "^2.0.2",
+    "npm": "^9.5.0",
     "path": "^0.12.7"
   }
 }
