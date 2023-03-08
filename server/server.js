@@ -15,7 +15,7 @@ app.get("/list",async function(req,res){
   let location = path.join(__dirname, `../pages/files/${req.query.folder}`);
   const pathList = req.query.folder.split('/');
   let files = [];
-  let cat = ["Select..."];
+  let cat = [];
   const exten = ["mkv","mp4","avi"];
   
   if (pathList[0] == "Films"){

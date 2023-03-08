@@ -116,12 +116,11 @@ async function main(e){
       level = 2;
     }
   }
-  url
   
   const films = await getFiles(url);
   
   //let films = [];
-  let cats = ["select..."];
+  let cats = [];
   const files = ["mkv","mp4","avi"];
   
   // for (child of children){
@@ -186,7 +185,7 @@ async function showVideo(videos,urlList){
   let i = 0;
   if(urlList[0] == "TV"){
     const tmpImg = document.createElement("img");
-    tmpImg.src = "/files/loading.gif";
+    tmpImg.src = "/img/loading.gif";
     tmpImg.id = "tmpImg";
     const lib = document.querySelector("#library");
     lib.appendChild(tmpImg);
@@ -256,9 +255,8 @@ async function showVideo(videos,urlList){
  * @param {list} cats first set of child dir
  * @param {list} catTwo second set of child dir
  */
-function showCatagories(cats,catTwo){
+async function showCatagories(cats,catTwo){
   const folders = document.querySelector("#folders");
-
   if (catTwo){
     if(!document.querySelector("#cat2")){
       const span = document.createElement("span");
@@ -286,18 +284,19 @@ function showCatagories(cats,catTwo){
         document.querySelector("#cat2").appendChild(option);
       }
     }
+    const event = {target:document.querySelector("#cat2")}
+    main(event);
   }else{
+    const createCat = document.createElement("select") || document.querySelector("#cat");
     if(!document.querySelector("#cat")){
-      const createCat = document.createElement("select");
       createCat.id = "cat";
       createCat.classList = "category";
       document.querySelector("#folders").appendChild(createCat);
       createCat.addEventListener('change',main);
+      
     }else{
       document.querySelector("#cat").innerHTML = "";
     }
-
-    
 
     if(document.querySelector("#cat2")){
       document.querySelector("#cat2").remove();
@@ -310,6 +309,17 @@ function showCatagories(cats,catTwo){
       option.value = child;
       cat.appendChild(option);
     }
+    console.log("check");
+    if(createCat.value){
+      console.log("subCat");
+      const subCat = await (await fetch(`list/?folder=TV/${createCat.value}`)).json();
+      if(subCat.cat){
+        showCatagories(subCat.cat,true);
+        const event = {target:document.querySelector("#cat2")}
+        main(event);
+      }
+    }
+
     
   }
 }
@@ -388,7 +398,7 @@ async function showInfo(e){
   const play = document.createElement("img");
   play.classList = "play";
   play.addEventListener("click",startVideo);
-  play.src = "/files/playBtn.png";
+  play.src = "/img/playBtn.png";
   const filmData = await getFiles("Films");
   for (film of filmData.files){
     if (film.id == e.target.id){
