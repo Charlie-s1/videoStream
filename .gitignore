@@ -3,6 +3,7 @@
 *.mkv
 *.avi
 films.json
+genres.json
 *.srt
 *.vtt
 *.txt

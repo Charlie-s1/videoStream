@@ -78,22 +78,38 @@ async function getFiles(dir){
 async function main(e){
   const ord = document.querySelector("#ord");
   const search = document.querySelector("#search");
+  const genre = document.querySelector("#genres");
+  const genreList = await (await fetch("/genres")).json();
+
   const film = document.querySelector("#film");
   const tv = document.querySelector("#tv");
 
-  if(e == null){
+  if(e == null || e.target.id=="film"){
     ord.classList = "category";
     search.classList = "";
-  }
-  else if(e.target.id=="film"){
     film.classList = "select";
     tv.classList.remove("select");
     ord.classList = "category";
+    genre.classList = "category";
     search.classList = "";
+    genre.innerHTML = "";
+
+    const select = document.createElement("option");
+    select.textContent = "Genre..."
+    genre.appendChild(select)
+    for(g of genreList.genres){
+      console.log(g);
+      const item = document.createElement("option");
+      item.textContent = g.name;
+      item.value = g.id;
+      genre.appendChild(item);
+    }
+    
   }else if(e.target.id=="tv"){
     tv.classList = "select";
     film.classList.remove("select");
     ord.classList = "hide";
+    genre.classList = "hide";
     search.classList = "hide";
   }
   
@@ -359,7 +375,8 @@ async function startVideo(e){
     const filmData = await getFiles("Films");
     for (film of filmData.files){
       if (film.id == e.target.id){
-        source.src = film.link;
+        source.src = film.vidLink;
+				console.log(film)
 
         for (film of filmData.files){
           if (film.id == e.target.id){

@@ -57,5 +57,14 @@ app.get("/data", function(req,res){
   res.send(data);
 });
 
+app.get("/genres",function(req,res){
+  let dir = path.join(__dirname, "../server/genres.json");
+  fs.readFile(dir,(err,data)=>{
+    if(!err){
+      res.send(data);
+    }
+  })
+})
+
 console.log("videoStream running on 8080")
 app.listen(8080);
